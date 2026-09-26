@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Self-Study Academy Pro</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --subtext-color: #6c757d;
+            --accent-color: #2b70fa;
+            --border-color: #e9ecef;
+            --nav-bg: #ffffff;
+        }
+
+        body.dark {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --subtext-color: #94a3b8;
+            --accent-color: var(--custom-accent, #38bdf8);
+            --border-color: #334155;
+            --nav-bg: #1e293b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0 0 80px 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 { font-size: 18px; margin: 0; font-weight: 700; }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .banner {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #1d4ed8 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .banner h2 { margin: 0 0 8px 0; font-size: 20px; }
+        .banner p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* Lesson detail view */
+        #lesson-detail-view {
+            display: none;
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 16px;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        /* Comments */
+        .comments-section {
+            margin-top: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .comment-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-author { font-weight: bold; color: var(--accent-color); margin-bottom: 2px; }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Profile & Stats */
+        .profile-header { text-align: center; padding: 20px 0; }
+        .avatar {
+            width: 80px; height: 80px; background: var(--accent-color); color: white;
+            font-size: 32px; font-weight: bold; display: flex; align-items: center;
+            justify-content: center; border-radius: 50%; margin: 0 auto 12px auto;
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;
+        }
+        .stat-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 16px; border-radius: 14px; text-align: center;
+        }
+        .stat-card h2 { margin: 0 0 4px 0; color: var(--accent-color); font-size: 22px; }
+        .stat-card p { margin: 0; font-size: 13px; color: var(--subtext-color); }
+
+        /* Navigation */
+        nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--nav-bg); border-top: 1px solid var(--border-color);
+            display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000;
+        }
+        .nav-item {
+            background: none; border: none; color: var(--subtext-color);
+            font-size: 12px; display: flex; flex-direction: column; align-items: center;
+            gap: 4px; cursor: pointer; flex: 1;
+        }
+        .nav-item.active { color: var(--accent-color); font-weight: 600; }
+        .nav-item span.icon { font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="header-title">📚 IELTS Academy</h1>
+        <button class="theme-btn" onclick="toggleTheme()">🌓</button>
+    </header>
+
+    <!-- ASOSIY CONTAINER -->
+    <div class="container" id="main-container">
+        
+        <!-- 1. KURSLAR -->
+        <div id="tab-courses" class="tab-content active">
+            <div class="banner">
+                <h2>IELTS Self-Study Guide</h2>
+                <p>Noldan 7.0+ gacha bo'lgan barcha video darsliklar.</p>
+            </div>
+            <div class="section-title">Mavjud Modullar</div>
+            <div id="dynamic-courses-list"></div>
+        </div>
+
+        <!-- 2. LUG'AT -->
+        <div id="tab-vocab" class="tab-content">
+            <div class="section-title" style="margin-top:0;">💡 Kun Idiomi va Maslahat</div>
+            <div class="card">
+                <h3 style="margin: 0 0 6px 0; color: var(--accent-color);">Idiom: "A piece of cake"</h3>
+                <p style="margin: 0; font-size: 14px;">Ma'nosi: Juda oson ish, muammosiz bajariladigan vazifa.</p>
+            </div>
+            <div class="card">
+                <h3 style="margin: 0 0 6px 0; color: var(--accent-color);">Writing Maslahati</h3>
+                <p style="margin: 0; font-size: 14px;">Task 2 da har doim fikringizni aniq misollar bilan asoslang.</p>
+            </div>
+        </div>
+
+        <!-- 3. STATISTIKA -->
+        <div id="tab-stats" class="tab-content">
+            <div class="section-title" style="margin-top:0;">📊 Sizning Natijalaringiz</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h2 id="stat-lessons-watched">0</h2>
+                    <p>Ko'rilgan darslar</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Active</h2>
+                    <p>Status</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PROFIL -->
+        <div id="tab-profile" class="tab-content">
+            <div class="profile-header">
+                <div class="avatar" id="user-avatar">U</div>
+                <h2 id="user-name" style="margin: 0 0 4px 0;">Foydalanuvchi</h2>
+                <p id="user-username" style="margin: 0; color: var(--subtext-color);">@username</p>
+            </div>
+            <div class="section-title">Ma'lumot</div>
+            <div class="card">
+                <p style="margin: 0; font-size: 14px;"><strong>Telegram ID:</strong> <span id="user-id-text">Aniqlanmoqda...</span></p>
+            </div>
+        </div>
+
+        <!-- 5. ADMIN PANEL (Kengaytirilgan boshqaruv va Dizayn sozlamalari) -->
+        <div id="tab-admin" class="tab-content">
+            <div class="section-title" style="margin-top:0; color: #e11d48;">🛠️ Admin Boshqaruv Markazi</div>
+            
+            <!-- Dizayn va Rang sozlamalari -->
+            <div class="card">
+                <h3 style="margin-top:0;">🎨 Ilova Dizayni va Ranglari</h3>
+                <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 8px;">Asosiy aksent rangini tanlang:</p>
+                <select id="admin-theme-color" onchange="changeAppThemeColor(this.value)">
+                    <option value="#2b70fa">Ko'k (Standard)</option>
+                    <option value="#10b981">Yashil (Emerald)</option>
+                    <option value="#8b5cf6">Binafsha (Purple)</option>
+                    <option value="#f59e0b">Sariq / To'q sariq (Amber)</option>
+                    <option value="#ef4444">Qizil (Red)</option>
+                </select>
+            </div>
+
+            <!-- Dars qo'shish -->
+            <div class="card">
+                <h3 style="margin-top:0;">➕ Yangi Dars qo'shish</h3>
+                <input type="text" id="admin-title" placeholder="Dars nomi">
+                <input type="text" id="admin-desc" placeholder="Qisqacha tavsif">
+                <input type="text" id="admin-youtube" placeholder="YouTube Video ID (Masalan: dQw4w9WgXcQ)">
+                <button class="btn-primary" onclick="addNewLesson()">Darsni Qo'shish</button>
+            </div>
+
+            <!-- Mavjud darslarni boshqarish -->
+            <div class="card">
+                <h3 style="margin-top:0;">📚 Darslarni O'chirish</h3>
+                <div id="admin-lessons-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- VIDEO DETAL VA IZOHLAR -->
+    <div id="lesson-detail-view">
+        <button class="back-btn" onclick="closeLessonDetail()">← Orqaga qaytish</button>
+        <h2 id="detail-title" style="margin-top:0; font-size: 18px;"></h2>
+        <div class="video-container">
+            <iframe id="detail-iframe" src="" allowfullscreen></iframe>
+        </div>
+        <p id="detail-desc" style="color: var(--subtext-color); font-size: 14px;"></p>
+
+        <div class="comments-section">
+            <h3 style="margin-top:0; font-size: 15px;">💬 Izohlar</h3>
+            <div id="comments-list"></div>
+            <div style="margin-top: 12px;">
+                <textarea id="comment-input" rows="2" placeholder="Fikringizni yozib qoldiring..."></textarea>
+                <button class="btn-primary" onclick="postComment()">Izoh qoldirish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATSIYA -->
+    <nav id="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('courses', this)">
+            <span class="icon">📚</span>Kurslar
+        </button>
+        <button class="nav-item" onclick="switchTab('vocab', this)">
+            <span class="icon">💡</span>Lug'at
+        </button>
+        <button class="nav-item" onclick="switchTab('stats', this)">
+            <span class="icon">📊</span>Statistika
+        </button>
+        <button class="nav-item" onclick="switchTab('profile', this)">
+            <span class="icon">⚙️</span>Profil
+        </button>
+        <button class="nav-item" id="nav-admin-btn" style="display:none;" onclick="switchTab('admin', this)">
+            <span class="icon">🛠️</span>Admin
+        </button>
+    </nav>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // ⚠️ O'Z TELEGRAM ID'INGIZNI SHU YERGA YOZING:
+        const MY_ADMIN_ID = 123456789; // Masalan: 987654321
+
+        let currentLessonIndex = null;
+        let userNameGlobal = "O'quvchi";
+
+        // Saqlangan dizayn rangini yuklash
+        let savedAccent = localStorage.getItem('app_accent_color') || '#2b70fa';
+        document.documentElement.style.setProperty('--accent-color', savedAccent);
+
+        let defaultLessons = [
+            {
+                title: "1-Modul: Listening Sirlari va Strategiyalar",
+                desc: "Tabiiy eshitish va savollarga to'g'ri javob topish usullari.",
+                videoId: "dQw4w9WgXcQ",
+                comments: [
+                    { id: 1, author: "Azizbek", text: "Juda zo'r dars ekan, rahmat!" }
+                ]
+            }
+        ];
+
+        let lessons = JSON.parse(localStorage.getItem('ielts_lessons_pro')) || defaultLessons;
+
+        // User aniqlash
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            userNameGlobal = user.first_name || "O'quvchi";
+            const username = user.username ? "@" + user.username : "ID: " + user.id;
+            
+            document.getElementById('user-name').innerText = userNameGlobal;
+            document.getElementById('user-username').innerText = username;
+            document.getElementById('user-avatar').innerText = userNameGlobal.charAt(0).toUpperCase();
+            document.getElementById('user-id-text').innerText = user.id;
+
+            if (user.id === MY_ADMIN_ID) {
+                document.getElementById('nav-admin-btn').style.display = 'flex';
+            }
+        }
+
+        // Admin rang o'zgartirishi
+        function changeAppThemeColor(color) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            localStorage.setItem('app_accent_color', color);
+        }
+
+        // Darslarni chiqarish
+        function renderCourses() {
+            const listContainer = document.getElementById('dynamic-courses-list');
+            const adminListContainer = document.getElementById('admin-lessons-list');
+            
+            listContainer.innerHTML = '';
+            if(adminListContainer) adminListContainer.innerHTML = '';
+
+            lessons.forEach((lesson, index) => {
+                // Foydalanuvchi uchun darslar
+                listContainer.innerHTML += `
+                    <div class="card" onclick="openLessonDetail(${index})">
+                        <div style="font-size: 16px; font-weight: bold; color: var(--accent-color);">${lesson.title}</div>
+                        <p style="font-size: 13px; color: var(--subtext-color); margin: 4px 0 0 0;">${lesson.desc}</p>
+                        <div style="margin-top: 8px; font-size: 12px; color: var(--accent-color);">▶️ Darsni ko'rish (${lesson.comments.length} izoh)</div>
+                    </div>
+                `;
+
+                // Admin uchun o'chirish paneli
+                if(adminListContainer) {
+                    adminListContainer.innerHTML += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 13px;">
+                            <span>${lesson.title}</span>
+                            <button class="btn-danger" onclick="deleteLesson(${index})">O'chirish</button>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function deleteLesson(index) {
+            if(confirm("Haqiqatan ham bu darsni o'chirmoqchimisiz?")) {
+                lessons.splice(index, 1);
+                localStorage.setItem('ielts_lessons_pro', JSON.stringify(lessons));
+                renderCourses();
+            }
+        }
+
+        function openLessonDetail(index) {
+            currentLessonIndex = index;
+            const lesson = lessons[index];
+
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('bottom-nav').style.display = 'none';
+            document.getElementById('lesson-detail-view').style.display = 'block';
+
+            document.getElementById('detail-title').innerText = lesson.title;
+            document.getElementById('detail-desc').innerText = lesson.desc;
+            document.getElementById('detail-iframe').src = `https://www.youtube.com/embed/${lesson.videoId}`;
+
+            renderComments();
+
+            let watched = parseInt(localStorage.getItem('watched_count') || '0') + 1;
+            localStorage.setItem('watched_count', watched);
+            document.getElementById('stat-lessons-watched').innerText = watched;
+        }
+
+        function closeLessonDetail() {
+            document.getElementById('lesson-detail-view').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('detail-iframe').src = '';
+        }
+
+        function renderComments() {
+            const commentsList = document.getElementById('comments-list');
+            const lesson = lessons[currentLessonIndex];
+            commentsList.innerHTML = '';
+
+            if (lesson.comments.length === 0) {
+                commentsList.innerHTML = '<p style="font-size: 13px; color: var(--subtext-color);">Hozircha izohlar yo\'q.</p>';
+                return;
+            }
+
+            lesson.comments.forEach((com, cIndex) => {
+                commentsList.innerHTML += `
+                    <div class="comment-item">
+                        <div>
+                            <div class="comment-author">${com.author}</div>
+                            <div>${com.text}</div>
+                        </div>
+                        <button class="btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="deleteComment(${cIndex})">x</button>
+                    </div>
+                `;
+            });
+        }
+
+        function postComment() {
+            const text = document.getElementById('comment-input').value.trim();
+            if (!text) return;
+
+            lessons[currentLessonIndex].comments.push({
+                author: userNameGlobal,
+                text: text
+            });
+
+            localStorage.setItem('ielts_lessons_pro', JSON.stringify(lessons));
+            document.getElementById('comment-input').value = '';
+            renderComments();
+            renderCourses();
+        }
+
+        function deleteComment(cIndex) {
+            lessons[currentLessonIndex].comments.splice(cIndex, 1);
+            localStorage.setItem('ielts_lessons_pro', JSON.stringify(lessons));
+            renderComments();
+            renderCourses();
+        }
+
+        function addNewLesson() {
+            const title = document.getElementById('admin-title').value.trim();
+            const desc = document.getElementById('admin-desc').value.trim();
+            const videoId = document.getElementById('admin-youtube').value.trim();
+
+            if (!title || !videoId) {
+                alert("Sarlavha va YouTube ID kiritilishi shart!");
+                return;
+            }
+
+            lessons.push({ title, desc, videoId, comments: [] });
+            localStorage.setItem('ielts_lessons_pro', JSON.stringify(lessons));
+
+            document.getElementById('admin-title').value = '';
+            document.getElementById('admin-desc').value = '';
+            document.getElementById('admin-youtube').value = '';
+
+            alert("Dars muvaffaqiyatli qo'shildi!");
+            renderCourses();
+            switchTab('courses', document.querySelector('.nav-item'));
+        }
+
+        renderCourses();
+        document.getElementById('stat-lessons-watched').innerText = localStorage.getItem('watched_count') || '0';
+
+        if (tg.colorScheme === 'dark') { document.body.classList.add('dark'); }
+        function toggleTheme() { document.body.classList.toggle('dark'); }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            const titles = {
+                'courses': '📚 IELTS Academy',
+                'vocab': '💡 Lug\'at va Maslahat',
+                'stats': '📊 Statistika',
+                'profile': '⚙️ Profil',
+                'admin': '🛠️ Admin Panel'
+            };
+            document.getElementById('header-title').innerText = titles[tabName];
+        }
+    </script>
+</body>
+</html>
