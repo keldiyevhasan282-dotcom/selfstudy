@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Master Pro Academy</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --subtext-color: #64748b;
+            --accent-color: #2563eb;
+            --border-color: #e2e8f0;
+            --nav-bg: #ffffff;
+            
+            --col-listening: #3b82f6;
+            --col-reading: #10b981;
+            --col-writing: #f59e0b;
+            --col-speaking: #ec4899;
+            --col-vocab: #8b5cf6;
+        }
+
+        body.dark {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --text-color: #f1f5f9;
+            --subtext-color: #94a3b8;
+            --accent-color: #38bdf8;
+            --border-color: #1e293b;
+            --nav-bg: #131b2e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0 0 80px 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 { font-size: 18px; margin: 0; font-weight: 700; }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .cat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .cat-card:active { transform: scale(0.97); }
+        .cat-icon { font-size: 28px; margin-bottom: 8px; }
+        .cat-title { font-weight: bold; font-size: 15px; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+        }
+
+        #skill-view, #lesson-view {
+            display: none;
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 16px;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--nav-bg); border-top: 1px solid var(--border-color);
+            display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000;
+        }
+        .nav-item {
+            background: none; border: none; color: var(--subtext-color);
+            font-size: 11px; display: flex; flex-direction: column; align-items: center;
+            gap: 4px; cursor: pointer; flex: 1;
+        }
+        .nav-item.active { color: var(--accent-color); font-weight: 600; }
+        .nav-item span.icon { font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="header-title">🎯 IELTS Master Pro</h1>
+        <button class="theme-btn" onclick="toggleTheme()">🌓</button>
+    </header>
+
+    <div class="container" id="main-container">
+        
+        <!-- 1. SKILLS & QIDIRUV (SEARCH HUB) -->
+        <div id="tab-home" class="tab-content active">
+            <div class="card" style="background: linear-gradient(135deg, var(--accent-color), #1e40af); color: white; border: none;">
+                <h2 style="margin:0 0 6px 0;">IELTS & Zamonlar Qidiruvi</h2>
+                <p style="margin:0; font-size: 13px; opacity: 0.9;">Istalgan mavzu, zamon yoki qoida bo'yicha YouTube'dan qidiring va o'rganing!</p>
+            </div>
+
+            <!-- YANGI: YouTube Qidiruv Paneli -->
+            <div class="card" style="border-color: var(--accent-color);">
+                <h3 style="margin-top:0; font-size: 14px;">🔍 Istalgan mavzu bo'yicha video qidirish</h3>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="search-input" placeholder="Masalan: Present Simple, Past Continuous..." style="margin-bottom:0;">
+                    <button class="btn-primary" style="width: auto; padding: 0 16px;" onclick="searchYouTubeLessons()">Topish</button>
+                </div>
+            </div>
+            <div id="search-results"></div>
+
+            <div class="section-title">IELTS Skills & Modules</div>
+            <div class="categories-grid">
+                <div class="cat-card" style="border-top: 4px solid var(--col-listening);" onclick="openSkill('listening')">
+                    <div class="cat-icon">🎧</div>
+                    <div class="cat-title">Listening</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-reading);" onclick="openSkill('reading')">
+                    <div class="cat-icon">📖</div>
+                    <div class="cat-title">Reading</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-writing);" onclick="openSkill('writing')">
+                    <div class="cat-icon">✍️</div>
+                    <div class="cat-title">Writing</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-speaking);" onclick="openSkill('speaking')">
+                    <div class="cat-icon">🗣️</div>
+                    <div class="cat-title">Speaking</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. LUG'AT -->
+        <div id="tab-vocab" class="tab-content">
+            <div class="section-title" style="margin-top:0;">⚡ Smart Flashcards (Band 8+)</div>
+            <div class="card" style="background: linear-gradient(135deg, var(--col-vocab), #6d28d9); color: white; text-align: center; padding: 20px; cursor:pointer;" onclick="nextFlashcard()">
+                <h2 id="fc-word" style="margin:0 0 6px 0;">Ubiquitous</h2>
+                <p id="fc-meaning" style="margin:0; font-size: 13px; opacity: 0.9;">(Bosib tarjimasini ko'ring) ➔ Har joyda mavjud</p>
+            </div>
+            <div class="section-title">Barcha Lug'atlar</div>
+            <div id="vocab-list"></div>
+        </div>
+
+        <!-- 3. STATISTIKA -->
+        <div id="tab-stats" class="tab-content">
+            <div class="section-title" style="margin-top:0;">📊 Faollik va Streak</div>
+            <div class="card">
+                <h3 style="margin:0 0 4px 0; color: var(--accent-color);">Streak: <span id="stat-streak">1</span> kun 🔥</h3>
+                <p style="margin:0; font-size: 13px; color: var(--subtext-color);">Har kuni kirib o'qish zanjirni uzmaydi.</p>
+            </div>
+            <div class="card">
+                <h3 style="margin:0 0 4px 0;" id="stat-completed-tests">Ko'rilgan darslar: 0</h3>
+            </div>
+        </div>
+
+        <!-- 4. PROFIL -->
+        <div id="tab-profile" class="tab-content">
+            <div class="card" style="text-align: center; padding: 20px;">
+                <div id="user-avatar" style="width: 60px; height: 60px; background: var(--accent-color); color: white; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 10px auto;">U</div>
+                <h2 id="user-name" style="margin: 0 0 4px 0;">O'quvchi</h2>
+                <p id="user-username" style="margin: 0; color: var(--subtext-color); font-size: 13px;">@username</p>
+            </div>
+        </div>
+
+        <!-- 5. ADMIN PANEL -->
+        <div id="tab-admin" class="tab-content">
+            <div class="section-title" style="margin-top:0; color: #ef4444;">🛠️ Admin Markazi</div>
+            <div class="card">
+                <h3 style="margin-top:0;">🎨 Kategoriya Ranglari</h3>
+                <label style="font-size: 12px;">Listening:</label>
+                <input type="color" id="col-picker-listening" value="#3b82f6" onchange="updateCatColor('listening', this.value)">
+                <label style="font-size: 12px;">Reading:</label>
+                <input type="color" id="col-picker-reading" value="#10b981" onchange="updateCatColor('reading', this.value)">
+                <label style="font-size: 12px;">Writing:</label>
+                <input type="color" id="col-picker-writing" value="#f59e0b" onchange="updateCatColor('writing', this.value)">
+                <label style="font-size: 12px;">Speaking:</label>
+                <input type="color" id="col-picker-speaking" value="#ec4899" onchange="updateCatColor('speaking', this.value)">
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0;">➕ Dars Qo'shish</h3>
+                <select id="admin-category">
+                    <option value="listening">Listening</option>
+                    <option value="reading">Reading</option>
+                    <option value="writing">Writing</option>
+                    <option value="speaking">Speaking</option>
+                </select>
+                <input type="text" id="admin-title" placeholder="Mavzu nomi">
+                <input type="text" id="admin-desc" placeholder="Izoh">
+                <input type="text" id="admin-youtube" placeholder="YouTube Video ID">
+                <button class="btn-primary" onclick="addNewContent()">Qo'shish</button>
+            </div>
+            <div class="card">
+                <h3 style="margin-top:0;">🗑️ O'chirish</h3>
+                <div id="admin-content-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SKILL VIEW -->
+    <div id="skill-view">
+        <button class="back-btn" onclick="closeSkillView()">← Orqaga</button>
+        <h2 id="skill-view-title" style="margin-top:0; font-size: 18px;"></h2>
+        <div id="skill-lessons-list"></div>
+    </div>
+
+    <!-- LESSON VIEW -->
+    <div id="lesson-view">
+        <button class="back-btn" onclick="closeLessonView()">← Orqaga</button>
+        <h2 id="lesson-title" style="margin-top:0; font-size: 18px;"></h2>
+        <div class="video-container">
+            <iframe id="lesson-iframe" src="" allowfullscreen></iframe>
+        </div>
+        <p id="lesson-desc" style="color: var(--subtext-color); font-size: 14px;"></p>
+    </div>
+
+    <!-- NAVIGATSIYA -->
+    <nav id="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('home', this)"><span class="icon">🎯</span>Skills</button>
+        <button class="nav-item" onclick="switchTab('vocab', this)"><span class="icon">💡</span>Lug'at</button>
+        <button class="nav-item" onclick="switchTab('stats', this)"><span class="icon">📊</span>Stat</button>
+        <button class="nav-item" onclick="switchTab('profile', this)"><span class="icon">⚙️</span>Profil</button>
+        <button class="nav-item" id="nav-admin-btn" style="display:none;" onclick="switchTab('admin', this)"><span class="icon">🛠️</span>Admin</button>
+    </nav>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const MY_ADMIN_ID = 8938951243; 
+
+        function loadSavedColors() {
+            ['listening', 'reading', 'writing', 'speaking'].forEach(cat => {
+                let col = localStorage.getItem('col_' + cat);
+                if(col) {
+                    document.documentElement.style.setProperty('--col-' + cat, col);
+                    let picker = document.getElementById('col-picker-' + cat);
+                    if(picker) picker.value = col;
+                }
+            });
+        }
+        loadSavedColors();
+
+        function updateCatColor(cat, color) {
+            document.documentElement.style.setProperty('--col-' + cat, color);
+            localStorage.setItem('col_' + cat, color);
+        }
+
+        let defaultContent = [
+            { id: 1, category: 'listening', title: 'Listening Section 1 Strategy', desc: 'Form completion sirlari.', videoId: 'dQw4w9WgXcQ' }
+        ];
+
+        let appContent = JSON.parse(localStorage.getItem('ielts_master_content')) || defaultContent;
+        let vocabList = [
+            { word: 'Ubiquitous', meaning: 'Har joyda mavjud' },
+            { word: 'Meticulous', meaning: 'Sinchkov, e\'tiborli' }
+        ];
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            document.getElementById('user-name').innerText = user.first_name || "O'quvchi";
+            document.getElementById('user-username').innerText = user.username ? "@" + user.username : "ID: " + user.id;
+            document.getElementById('user-avatar').innerText = (user.first_name || "U").charAt(0).toUpperCase();
+
+            if (user.id === MY_ADMIN_ID) {
+                document.getElementById('nav-admin-btn').style.display = 'flex';
+            }
+        } else {
+            document.getElementById('nav-admin-btn').style.display = 'flex';
+        }
+
+        // YANGI: YouTube Qidiruv Funksiyasi (O'quvchi xohlagan zamon yoki mavzusini yozib topadi)
+        function searchYouTubeLessons() {
+            let query = document.getElementById('search-input').value.trim();
+            let resDiv = document.getElementById('search-results');
+            if(!query) {
+                alert('Iltimos, qidirish uchun mavzu yoki zamon nomini kiriting!');
+                return;
+            }
+
+            // O'quvchi kiritgan so'zga moslab bazadan yoki YouTube qidiruviga yo'naltiruvchi qulay card chiqaramiz
+            resDiv.innerHTML = `
+                <div class="card" style="border-color: var(--accent-color);">
+                    <h4 style="margin:0 0 6px 0; color: var(--accent-color);">🔎 "${query}" bo'yicha qidiruv natijalari:</h4>
+                    <p style="font-size: 13px; color: var(--subtext-color);">YouTube orqali ushbu mavzu bo'yicha eng yaxshi darsni ochish:</p>
+                    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' english grammar ielts')}" target="_blank" style="display:inline-block; margin-top:8px; padding:8px 12px; background: var(--accent-color); color:white; border-radius:6px; text-decoration:none; font-size:13px; font-weight:bold;">▶️ YouTube'da ochish va ko'rish</a>
+                </div>
+            `;
+        }
+
+        function openSkill(cat) {
+            const titles = { listening: '🎧 Listening', reading: '📖 Reading', writing: '🇦 Writing', speaking: '🗣️ Speaking' };
+            document.getElementById('skill-view-title').innerText = titles[cat] || 'Darslar';
+            
+            const list = document.getElementById('skill-lessons-list');
+            list.innerHTML = '';
+
+            let filtered = appContent.filter(item => item.category === cat);
+            if(filtered.length === 0) {
+                list.innerHTML = '<p style="color: var(--subtext-color); font-size: 13px;">Hozircha bu bo\'limda darslar yo\'q.</p>';
+            } else {
+                filtered.forEach(item => {
+                    list.innerHTML += `
+                        <div class="card" onclick="openLesson(${item.id})">
+                            <h3 style="margin:0 0 4px 0; color: var(--accent-color);">${item.title}</h3>
+                            <p style="margin:0; font-size: 13px; color: var(--subtext-color);">${item.desc}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('skill-view').style.display = 'block';
+        }
+
+        function closeSkillView() {
+            document.getElementById('skill-view').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
+        }
+
+        function openLesson(id) {
+            const item = appContent.find(i => i.id === id);
+            if(!item) return;
+
+            document.getElementById('skill-view').style.display = 'none';
+            document.getElementById('lesson-view').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'none';
+
+            document.getElementById('lesson-title').innerText = item.title;
+            document.getElementById('lesson-desc').innerText = item.desc;
+            document.getElementById('lesson-iframe').src = `https://www.youtube.com/embed/${item.videoId}`;
+
+            let testsCount = parseInt(localStorage.getItem('completed_tests') || '0') + 1;
+            localStorage.setItem('completed_tests', testsCount);
+            document.getElementById('stat-completed-tests').innerText = 'Ko\'rilgan darslar: ' + testsCount;
+        }
+
+        function closeLessonView() {
+            document.getElementById('lesson-view').style.display = 'none';
+            document.getElementById('skill-view').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('lesson-iframe').src = '';
+        }
+
+        let fcIndex = 0;
+        function nextFlashcard() {
+            fcIndex = (fcIndex + 1) % vocabList.length;
+            document.getElementById('fc-word').innerText = vocabList[fcIndex].word;
+            document.getElementById('fc-meaning').innerText = '(Bosib ko\'rish) ➔ ' + vocabList[fcIndex].meaning;
+        }
+
+        function renderVocabList() {
+            const list = document.getElementById('vocab-list');
+            list.innerHTML = '';
+            vocabList.forEach(v => {
+                list.innerHTML += `<div class="card"><strong>${v.word}</strong>: <span style="color: var(--subtext-color);">${v.meaning}</span></div>`;
+            });
+        }
+        renderVocabList();
+
+        function addNewContent() {
+            const category = document.getElementById('admin-category').value;
+            const title = document.getElementById('admin-title').value.trim();
+            const desc = document.getElementById('admin-desc').value.trim();
+            const videoId = document.getElementById('admin-youtube').value.trim();
+
+            if(!title || !videoId) { alert('Sarlavha va YouTube ID shart!'); return; }
+
+            appContent.push({ id: Date.now(), category, title, desc, videoId });
+            localStorage.setItem('ielts_master_content', JSON.stringify(appContent));
+            alert('Qo\'shildi!');
+            renderAdminList();
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-content-list');
+            if(!list) return;
+            list.innerHTML = '';
+            appContent.forEach((item, index) => {
+                list.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 13px;">
+                        <span>[${item.category.toUpperCase()}] ${item.title}</span>
+                        <button class="btn-danger" onclick="deleteContent(${index})">O'chirish</button>
+                    </div>
+                `;
+            });
+        }
+        renderAdminList();
+
+        function deleteContent(index) {
+            if(confirm("O'chirmoqchimisiz?")) {
+                appContent.splice(index, 1);
+                localStorage.setItem('ielts_master_content', JSON.stringify(appContent));
+                renderAdminList();
+            }
+        }
+
+        function toggleTheme() { document.body.classList.toggle('dark'); }
+        if (tg.colorScheme === 'dark') { document.body.classList.add('dark'); }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
