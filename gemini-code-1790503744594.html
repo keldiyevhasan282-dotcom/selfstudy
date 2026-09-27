@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REBEL | AI English Coach & Smart Battle</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #07090e;
+            --card-bg: #101522;
+            --text-color: #f8fafc;
+            --subtext-color: #94a3b8;
+            --accent-color: #38bdf8;
+            --border-color: #1e293b;
+            --nav-bg: #0d121f;
+            
+            --col-listening: #3b82f6;
+            --col-reading: #10b981;
+            --col-writing: #f59e0b;
+            --col-speaking: #ec4899;
+            --col-vocab: #8b5cf6;
+        }
+
+        body.light {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --subtext-color: #64748b;
+            --accent-color: #2563eb;
+            --border-color: #e2e8f0;
+            --nav-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0 0 90px 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-burger-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .cat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cat-card:active { transform: scale(0.96); }
+        .cat-icon { font-size: 26px; margin-bottom: 8px; }
+        .cat-title { font-weight: 700; font-size: 14px; }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 22px 0 12px 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        #skill-view, #lesson-view, #vocab-detail-view, #menu-drawer {
+            display: none;
+        }
+
+        /* SIDEBAR MENU DRAWER */
+        #menu-drawer {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 80%; max-width: 320px; height: 100%;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        #menu-drawer.open { right: 0; }
+        .menu-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            display: none;
+        }
+        .menu-overlay.active { display: block; }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 16px;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), #0369a1);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            transition: opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary:active { opacity: 0.9; }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* AI CHAT STYLES */
+        .chat-box {
+            height: 320px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            background: var(--bg-color);
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .chat-msg.user {
+            background: var(--accent-color);
+            color: #07090e;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+            font-weight: 600;
+        }
+        .chat-msg.ai {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .comment-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .comment-item.pinned {
+            border-left: 3px solid var(--accent-color);
+            padding-left: 8px;
+            background: rgba(56, 189, 248, 0.03);
+            border-radius: 4px;
+        }
+
+        nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--nav-bg); border-top: 1px solid var(--border-color);
+            display: flex; justify-content: space-around; padding: 10px 0; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .nav-item {
+            background: none; border: none; color: var(--subtext-color);
+            font-size: 11px; display: flex; flex-direction: column; align-items: center;
+            gap: 4px; cursor: pointer; flex: 1; font-weight: 500;
+        }
+        .nav-item.active { color: var(--accent-color); font-weight: 700; }
+        .nav-item span.icon { font-size: 20px; }
+    </style>
+</head>
+<body class="dark">
+
+    <!-- MENU OVERLAY & DRAWER -->
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenuDrawer()"></div>
+    <div id="menu-drawer">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin:0; font-size: 18px; color: var(--accent-color);" id="m-title">📂 REBEL Menyu</h3>
+            <button onclick="toggleMenuDrawer()" style="background:none; border:none; color:var(--text-color); font-size: 18px; cursor:pointer;">✕</button>
+        </div>
+        
+        <!-- TILNI O'ZGARTIRISH BO'LIMI -->
+        <div class="card" style="margin-bottom: 12px; padding: 10px; border-color: var(--accent-color);">
+            <label style="font-size: 11px; color: var(--subtext-color); display: block; margin-bottom: 4px;" id="m-lang-label">🌐 Ilova tili / Язык / Language:</label>
+            <select id="language-select" onchange="changeLanguage(this.value)" style="margin-bottom:0; padding: 8px;">
+                <option value="uz">🇺🇿 O'zbekcha</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="card flex items-center justify-between cursor-pointer" onclick="openDrawerTab('battle')" style="margin:0; padding:12px;">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">⚔️</span>
+                    <span class="text-sm font-bold" data-i18n="menu_battle">Battle Room (1 ga 1)</span>
+                </div>
+                <span>➡️</span>
+            </div>
+
+            <div class="card flex items-center justify-between cursor-pointer" onclick="openDrawerTab('leaderboard')" style="margin:0; padding:12px;">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">🏆</span>
+                    <span class="text-sm font-bold" data-i18n="menu_leaderboard">Reyting va Afsonalar</span>
+                </div>
+                <span>➡️</span>
+            </div>
+
+            <div class="card flex items-center justify-between cursor-pointer" onclick="openDrawerTab('callcenter')" style="margin:0; padding:12px;">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">☎️</span>
+                    <span class="text-sm font-bold" data-i18n="menu_callcenter">Call Markaz & Murojaat</span>
+                </div>
+                <span>➡️</span>
+            </div>
+
+            <div class="card flex items-center justify-between cursor-pointer" onclick="openDrawerTab('profile')" style="margin:0; padding:12px;">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">👤</span>
+                    <span class="text-sm font-bold" data-i18n="menu_profile">O'quvchi Profili</span>
+                </div>
+                <span>➡️</span>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="brand-logo-container">
+            <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4H18C23.5 4 27.5 7.5 27.5 13C27.5 17 24.5 20 20.5 21.5L29 32H22L14.5 22H11V32H4V4Z" fill="url(#new_r_grad)"/>
+                <path d="M11 10H17.5C20 10 21.5 11.2 21.5 13C21.5 14.8 20 16 17.5 16H11V10Z" fill="#07090e"/>
+                <path d="M15 21.5L22.5 32H15L8 21.5H15Z" fill="url(#new_r_grad)"/>
+                <defs>
+                    <linearGradient id="new_r_grad" x1="4" y1="4" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#38bdf8"/>
+                        <stop offset="1" stop-color="#8b5cf6"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span style="font-size: 20px; font-weight: 950; letter-spacing: 1.5px; color: var(--accent-color);">REBEL</span>
+        </div>
+        
+        <div class="header-actions">
+            <button class="menu-burger-btn" onclick="toggleMenuDrawer()" title="Menyu">
+                ☰
+            </button>
+            <button class="theme-btn" onclick="toggleTheme()">🌓</button>
+        </div>
+    </header>
+
+    <div class="container" id="main-container">
+        
+        <!-- 1. HOME -->
+        <div id="tab-home" class="tab-content active">
+            <div class="card" style="background: linear-gradient(135deg, #0f172a, #1e293b); border: 1px solid rgba(56, 189, 248, 0.3);">
+                <div style="display:flex; align-items:center; gap: 8px; margin-bottom: 6px;">
+                    <span style="font-size: 20px;">🎯</span>
+                    <h2 style="margin:0; font-size: 16px; color: var(--accent-color);" data-i18n="hub_title">REBEL Hub</h2>
+                </div>
+                <p style="margin:0; font-size: 13px; line-height: 1.5; color: var(--subtext-color);" data-i18n="hub_desc">
+                    Ingliz tilini mustaqil, tizimli va samarali o'rganish uchun sun'iy intellektga asoslangan zamonaviy platforma.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px; display:flex; align-items:center; gap:6px;" data-i18n="youtube_title">
+                    <span>🔍</span> YouTube Qidiruv Markazi
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="search-input" placeholder="Mavzu: Advanced Grammar..." style="margin-bottom:0;">
+                    <button class="btn-primary" style="width: auto; padding: 0 16px;" onclick="searchYouTubeLessons()" data-i18n="btn_search">Qidirish</button>
+                </div>
+            </div>
+            <div id="search-results"></div>
+
+            <div class="section-title" data-i18n="ielts_skills_title">📊 IELTS Ko'nikmalari</div>
+            <div class="categories-grid">
+                <div class="cat-card" style="border-top: 4px solid var(--col-listening);" onclick="openSkill('listening')">
+                    <div class="cat-icon">🎧</div>
+                    <div class="cat-title">Listening</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-reading);" onclick="openSkill('reading')">
+                    <div class="cat-icon">📖</div>
+                    <div class="cat-title">Reading</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-writing);" onclick="openSkill('writing')">
+                    <div class="cat-icon">✍️</div>
+                    <div class="cat-title">Writing</div>
+                </div>
+                <div class="cat-card" style="border-top: 4px solid var(--col-speaking);" onclick="openSkill('speaking')">
+                    <div class="cat-icon">🗣️</div>
+                    <div class="cat-title">Speaking</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. SO'ZLAR (CAMBRIDGE 2000 - DARAJALAR VA UNLOCK FUNKSIYASI) -->
+        <div id="tab-vocab" class="tab-content">
+            <div class="section-title" style="margin-top:0;" data-i18n="vocab_main_title">📚 Cambridge 2000 So'zlar Bazasi</div>
+            <div class="card flex justify-between items-center mb-3" style="background: rgba(56, 189, 248, 0.05); border-color: var(--accent-color);">
+                <div class="text-xs"><span data-i18n="balance_text">Sizning balansingiz:</span> <b id="user-xp-count" class="text-sky-400">1450 XP</b></div>
+                <button onclick="earnXP()" class="btn-primary" style="width:auto; padding: 6px 10px; font-size:11px;" data-i18n="btn_get_xp">+ 100 XP olish</button>
+            </div>
+            <p class="text-[12px] text-subtext-color mb-3" data-i18n="vocab_desc">Darajani tanlang. Agar blok qulflangan bo'lsa, XP ballaringiz evaziga UNLOCK qilishingiz mumkin.</p>
+
+            <div class="space-y-3">
+                <div class="card flex justify-between items-center cursor-pointer" onclick="openVocabLevel('A2', 'A2 Daraja (300 so\'z - 10 ta blok)', 0)" style="border-color: #38bdf8;">
+                    <div>
+                        <span class="text-[11px] bg-sky-500/20 text-sky-400 px-2.5 py-1 rounded-full font-bold">A2 • Elementary (Ochiq 🔓)</span>
+                        <h3 class="text-sm font-bold text-white mt-2" data-i18n="a2_title">Boshlang'ich so'zlar to'plami</h3>
+                        <p class="text-[12px] text-slate-400" data-i18n="a2_sub">10 ta blok (Har biri 30 tadan so'z)</p>
+                    </div>
+                    <span class="text-xl">➡️</span>
+                </div>
+
+                <div class="card flex justify-between items-center cursor-pointer" onclick="openVocabLevel('B1', 'B1 Daraja (500 so\'z - 16 ta blok)', 200)" style="border-color: #10b981;">
+                    <div>
+                        <span id="badge-B1" class="text-[11px] bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full font-bold">B1 • Intermediate (200 XP 🔒)</span>
+                        <h3 class="text-sm font-bold text-white mt-2" data-i18n="b1_title">O'rta darajadagi so'zlar</h3>
+                        <p class="text-[12px] text-slate-400" data-i18n="b1_sub">16 ta blok (Har biri 30 tadan so'z)</p>
+                    </div>
+                    <span id="btn-icon-B1" class="text-xl">🔒</span>
+                </div>
+
+                <div class="card flex justify-between items-center cursor-pointer" onclick="openVocabLevel('B2', 'B2 Daraja (600 so\'z - 20 ta blok)', 400)" style="border-color: #f59e0b;">
+                    <div>
+                        <span id="badge-B2" class="text-[11px] bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">B2 • Upper-Intermediate (400 XP 🔒)</span>
+                        <h3 class="text-sm font-bold text-white mt-2" data-i18n="b2_title">Yuqori daraja so'zlari</h3>
+                        <p class="text-[12px] text-slate-400" data-i18n="b2_sub">20 ta blok (Har biri 30 tadan so'z)</p>
+                    </div>
+                    <span id="btn-icon-B2" class="text-xl">🔒</span>
+                </div>
+
+                <div class="card flex justify-between items-center cursor-pointer" onclick="openVocabLevel('C1', 'C1 Daraja (450 so\'z - 15 ta blok)', 600)" style="border-color: #ec4899;">
+                    <div>
+                        <span id="badge-C1" class="text-[11px] bg-pink-500/20 text-pink-400 px-2.5 py-1 rounded-full font-bold">C1 • Advanced (600 XP 🔒)</span>
+                        <h3 class="text-sm font-bold text-white mt-2" data-i18n="c1_title">Professional so'zlar</h3>
+                        <p class="text-[12px] text-slate-400" data-i18n="c1_sub">15 ta blok (Har biri 30 tadan so'z)</p>
+                    </div>
+                    <span id="btn-icon-C1" class="text-xl">🔒</span>
+                </div>
+
+                <div class="card flex justify-between items-center cursor-pointer" onclick="openVocabLevel('C2', 'C2 Daraja (150 so\'z - 5 ta blok)', 900)" style="border-color: #8b5cf6;">
+                    <div>
+                        <span id="badge-C2" class="text-[11px] bg-purple-500/20 text-purple-400 px-2.5 py-1 rounded-full font-bold">C2 • Proficiency (900 XP 🔒)</span>
+                        <h3 class="text-sm font-bold text-white mt-2" data-i18n="c2_title">Eng yuqori mukammal daraja</h3>
+                        <p class="text-[12px] text-slate-400" data-i18n="c2_sub">5 ta blok (Har biri 30 tadan so'z)</p>
+                    </div>
+                    <span id="btn-icon-C2" class="text-xl">🔒</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. AI CHAT (Asosiy bo'limlar qatorida) -->
+        <div id="tab-support" class="tab-content">
+            <div class="section-title" style="margin-top:0;" data-i18n="ai_chat_title">💬✨ AI English Coach Chat</div>
+            <div class="card">
+                <p style="font-size: 12px; color: var(--subtext-color); margin-top:0; margin-bottom: 10px;" data-i18n="ai_chat_desc">Sun'iy intellektga istalgan savolingizni bering va ingliz tilida muloqot qiling:</p>
+                <div class="chat-box" id="ai-chat-box">
+                    <div class="chat-msg ai" data-i18n="ai_welcome">Salom! Men sizning shaxsiy AI English Coach'ingizman. Qanday savolingiz bor? 🚀</div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="ai-chat-input" placeholder="Xabar yozing..." style="margin-bottom:0;" onkeypress="if(event.key === 'Enter') sendAIChatMessage()">
+                    <button class="btn-primary" style="width: auto; padding: 0 16px;" onclick="sendAIChatMessage()" data-i18n="btn_send">Yuborish</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ADMIN PANEL -->
+        <div id="tab-admin" class="tab-content">
+            <div class="section-title" style="margin-top:0; color: #ef4444;">⚙️ REBEL Admin Panel</div>
+            
+            <div class="card" style="border-color: var(--accent-color);">
+                <h3 style="margin-top:0; font-size: 14px; color: var(--accent-color);">🎨 Ilova Ranglarini Sozlash</h3>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div>
+                        <label style="font-size: 11px; color: var(--subtext-color);">Asosiy urg'u rangi:</label>
+                        <input type="color" id="picker-accent" value="#38bdf8" onchange="updateDesignTheme('accent', this.value)">
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; color: var(--subtext-color);">Karta foni:</label>
+                        <input type="color" id="picker-card" value="#101522" onchange="updateDesignTheme('card', this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="border-color: #ef4444;">
+                <h3 style="margin-top:0; font-size: 14px; color: #ef4444;">📥 Kelib tushgan Murojaatlar</h3>
+                <div id="admin-support-list"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size: 14px;">➕ Yangi Dars Qo'shish</h3>
+                <select id="admin-category">
+                    <option value="listening">Listening</option>
+                    <option value="reading">Reading</option>
+                    <option value="writing">Writing</option>
+                    <option value="speaking">Speaking</option>
+                </select>
+                <input type="text" id="admin-title" placeholder="Mavzu nomi">
+                <input type="text" id="admin-desc" placeholder="Qisqacha izoh">
+                <input type="text" id="admin-youtube" placeholder="YouTube Video ID">
+                <button class="btn-primary" onclick="addNewContent()">Darsni Joylash</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size: 14px;">🗑️ Kontentni Boshqarish</h3>
+                <div id="admin-content-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BATTLE ROOM VIEW -->
+    <div id="tab-battle" class="tab-content container">
+        <button class="back-btn" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])" data-i18n="btn_back">← Asosiyga qaytish</button>
+        <div class="section-title" style="margin-top:0;">⚡ BATTLE ROOM (1 ga 1)</div>
+        <div class="card text-center space-y-3" style="border-color: rgba(239, 68, 68, 0.4);">
+            <div style="font-size: 28px;">⚔️</div>
+            <h2 class="text-base font-bold text-red-400">Parallel Online Janglar</h2>
+            <p class="text-[12px] text-subtext-color">O'z darajangizdagi raqib bilan bir vaqtda lug'at bo'yicha musobaqalashing!</p>
+            <div class="text-left space-y-2 mt-2">
+                <label class="text-[11px] font-semibold text-slate-300">Jang kategoriyasini tanlang:</label>
+                <select id="battleCatSelect">
+                    <option value="a2_b1">A2 & B1 Kategoriya</option>
+                    <option value="b2_c1">B2 & C1 Kategoriya</option>
+                    <option value="all">Global All (Barcha 2000 so'z)</option>
+                </select>
+            </div>
+            <button class="btn-primary" style="background: #ef4444;" onclick="alert('Online raqib qidirilmoqda...')">Raqib Izlash va Boshlash 🚀</button>
+        </div>
+    </div>
+
+    <!-- REYTING VIEW -->
+    <div id="tab-leaderboard" class="tab-content container">
+        <button class="back-btn" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])" data-i18n="btn_back">← Asosiyga qaytish</button>
+        <div class="section-title" style="margin-top:0;">🏆 Reyting va Afsonalar</div>
+        <div class="card space-y-3">
+            <div class="bg-gradient-to-r from-amber-500/20 to-transparent border border-amber-500/30 p-3 rounded-xl flex items-center gap-3">
+                <span class="text-2xl">👑</span>
+                <div>
+                    <p class="text-[11px] text-amber-400 font-bold">Haftaning Afsonasi</p>
+                    <p class="text-sm font-extrabold text-white">Azizbek_01 (2,100 XP)</p>
+                </div>
+            </div>
+            <div class="space-y-2 text-xs">
+                <p class="font-semibold text-slate-400 uppercase tracking-wider">Oylik Global Reyting</p>
+                <div class="flex justify-between items-center p-3 rounded-xl border border-indigo-500/30" style="background:var(--bg-color);">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-amber-400">1</span>
+                        <span>Siz (Foydalanuvchi)</span>
+                    </div>
+                    <span class="font-bold text-indigo-400" id="leaderboard-xp-val">1,450 XP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL CENTER VIEW -->
+    <div id="tab-callcenter" class="tab-content container">
+        <button class="back-btn" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])" data-i18n="btn_back">← Asosiyga qaytish</button>
+        <div class="section-title" style="margin-top:0;" data-i18n="callcenter_title">☎️ Call Markaz & Murojaatlar</div>
+        
+        <div class="card" style="text-align: center; padding: 16px; border-color: var(--accent-color);">
+            <div style="font-size: 32px; margin-bottom: 4px;">👨‍💻</div>
+            <h3 style="margin: 0 0 4px 0; font-size: 15px; color: var(--accent-color);" data-i18n="leader_title">Asosiy Rahbar</h3>
+            <p style="font-size: 12px; color: var(--subtext-color); margin-bottom: 12px;">Texnik savollar va murojaatlar uchun:</p>
+            <a href="https://t.me/maxmudovich19" target="_blank" class="btn-primary" style="margin-bottom: 10px; display: block;">💬 Telegram (@maxmudovich19)</a>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top:0; font-size: 14px;">✍️ Murojaat yuborish</h3>
+            <input type="text" id="support-user-name" placeholder="Ismingiz">
+            <input type="text" id="support-user-phone" placeholder="Telefon yoki Telegram username">
+            <textarea id="support-user-msg" placeholder="Murojaat matni..." rows="2"></textarea>
+            <button class="btn-primary" onclick="sendSupportMessage()" data-i18n="btn_send">Yuborish</button>
+        </div>
+    </div>
+
+    <!-- PROFIL VIEW -->
+    <div id="tab-profile" class="tab-content container">
+        <button class="back-btn" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])" data-i18n="btn_back">← Asosiyga qaytish</button>
+        <div class="card" style="text-align: center; padding: 16px;">
+            <div id="user-avatar" style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--accent-color), #0369a1); color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 10px auto;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <h2 id="user-name" style="margin: 0 0 2px 0; font-size: 16px;">O'quvchi</h2>
+            <p id="user-username" style="margin: 0; color: var(--subtext-color); font-size: 12px;">@username</p>
+        </div>
+
+        <div class="card" style="border: 1px solid var(--accent-color);">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                <span style="font-size: 18px;">🤖</span>
+                <h3 style="margin:0; font-size: 14px; color: var(--accent-color);">AI English Coach Roadmap</h3>
+            </div>
+            <div id="ai-advice" style="font-size: 12px; line-height: 1.5; color: var(--text-color);">
+                Diagnostika qilinmoqda...
+            </div>
+        </div>
+    </div>
+
+    <!-- VOCAB LEVEL DETAIL VIEW -->
+    <div id="vocab-detail-view" class="container">
+        <button class="back-btn" onclick="closeVocabDetail()" data-i18n="btn_back_levels">← Darajalarga qaytish</button>
+        <h2 id="vocab-level-title" style="margin-top:0; font-size: 16px; color: var(--accent-color);"></h2>
+        <p class="text-[12px] text-subtext-color mb-3">Har bir blok ichida 30 tadan so'z mavjud.</p>
+        <div id="vocab-blocks-list" class="space-y-3"></div>
+    </div>
+
+    <!-- SKILL VIEW -->
+    <div id="skill-view" class="container">
+        <button class="back-btn" onclick="closeSkillView()" data-i18n="btn_back">← Orqaga qaytish</button>
+        <h2 id="skill-view-title" style="margin-top:0; font-size: 16px;"></h2>
+        <div id="skill-lessons-list"></div>
+    </div>
+
+    <!-- LESSON VIEW -->
+    <div id="lesson-view" class="container">
+        <button class="back-btn" onclick="closeLessonView()" data-i18n="btn_back">← Orqaga qaytish</button>
+        <h2 id="lesson-title" style="margin-top:0; font-size: 16px;"></h2>
+        <div class="video-container">
+            <iframe id="lesson-iframe" src="" allowfullscreen></iframe>
+        </div>
+        <p id="lesson-desc" style="color: var(--subtext-color); font-size: 13px; line-height: 1.4;"></p>
+
+        <div class="card">
+            <h3 style="margin-top:0; font-size: 14px;" data-i18n="comments_title">💬 Fikrlar va Muhokama</h3>
+            <div id="comments-list"></div>
+            <input type="text" id="user-comment-input" placeholder="Fikringizni yozing..." style="margin-top: 8px; margin-bottom: 6px;">
+            <button class="btn-primary" style="font-size: 12px; padding: 8px;" onclick="addComment()" data-i18n="btn_comment">Izoh qoldirish</button>
+        </div>
+    </div>
+
+    <!-- NAVIGATSIYA BAR -->
+    <nav id="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('home', this)"><span class="icon">🏠</span><span data-i18n="nav_home">Asosiy</span></button>
+        <button class="nav-item" onclick="switchTab('vocab', this)"><span class="icon">📚</span><span data-i18n="nav_vocab">So'zlar</span></button>
+        <button class="nav-item" onclick="switchTab('support', this)"><span class="icon">💬</span><span data-i18n="nav_chat">AI Chat</span></button>
+        <button class="nav-item" id="nav-admin-btn" style="display:none;" onclick="switchTab('admin', this)"><span class="icon">⚙️</span>Admin</button>
+    </nav>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const MY_ADMIN_ID = 8938951243; 
+        let isAdmin = false;
+        let currentLessonId = null;
+        let userXP = parseInt(localStorage.getItem('user_xp')) || 1450;
+        let unlockedLevels = JSON.parse(localStorage.getItem('unlocked_levels')) || { 'A2': true };
+        let currentLang = localStorage.getItem('app_lang') || 'uz';
+
+        // LUG'ATLAR (TRANSLATIONS)
+        const translations = {
+            uz: {
+                menu_title: "📂 REBEL Menyu",
+                lang_label: "🌐 Ilova tili:",
+                menu_battle: "Battle Room (1 ga 1)",
+                menu_leaderboard: "Reyting va Afsonalar",
+                menu_callcenter: "Call Markaz & Murojaat",
+                menu_profile: "O'quvchi Profili",
+                hub_title: "REBEL Hub",
+                hub_desc: "Ingliz tilini mustaqil, tizimli va samarali o'rganish uchun sun'iy intellektga asoslangan zamonaviy platforma.",
+                youtube_title: "🔍 YouTube Qidiruv Markazi",
+                btn_search: "Qidirish",
+                ielts_skills_title: "📊 IELTS Ko'nikmalari",
+                vocab_main_title: "📚 Cambridge 2000 So'zlar Bazasi",
+                balance_text: "Sizning balansingiz:",
+                btn_get_xp: "+ 100 XP olish",
+                vocab_desc: "Darajani tanlang. Agar blok qulflangan bo'lsa, XP ballaringiz evaziga UNLOCK qilishingiz mumkin.",
+                a2_title: "Boshlang'ich so'zlar to'plami",
+                a2_sub: "10 ta blok (Har biri 30 tadan so'z)",
+                b1_title: "O'rta darajadagi so'zlar",
+                b1_sub: "16 ta blok (Har biri 30 tadan so'z)",
+                b2_title: "Yuqori daraja so'zlari",
+                b2_sub: "20 ta blok (Har biri 30 tadan so'z)",
+                c1_title: "Professional so'zlar",
+                c1_sub: "15 ta blok (Har biri 30 tadan so'z)",
+                c2_title: "Eng yuqori mukammal daraja",
+                c2_sub: "5 ta blok (Har biri 30 tadan so'z)",
+                ai_chat_title: "💬✨ AI English Coach Chat",
+                ai_chat_desc: "Sun'iy intellektga istalgan savolingizni bering va ingliz tilida muloqot qiling:",
+                ai_welcome: "Salom! Men sizning shaxsiy AI English Coach'ingizman. Qanday savolingiz bor? 🚀",
+                btn_send: "Yuborish",
+                btn_back: "← Orqaga qaytish",
+                btn_back_levels: "← Darajalarga qaytish",
+                callcenter_title: "☎️ Call Markaz & Murojaatlar",
+                leader_title: "Asosiy Rahbar",
+                comments_title: "💬 Fikrlar va Muhokama",
+                btn_comment: "Izoh qoldirish",
+                nav_home: "Asosiy",
+                nav_vocab: "So'zlar",
+                nav_chat: "AI Chat"
+            },
+            ru: {
+                menu_title: "📂 Меню REBEL",
+                lang_label: "🌐 Язык приложения:",
+                menu_battle: "Battle Room (1 на 1)",
+                menu_leaderboard: "Рейтинг и Легенды",
+                menu_callcenter: "Колл-центр и Связь",
+                menu_profile: "Профиль студента",
+                hub_title: "REBEL Hub",
+                hub_desc: "Современная платформа на базе искусственного интеллекта для самостоятельного и эффективного изучения английского языка.",
+                youtube_title: "🔍 Центр поиска YouTube",
+                btn_search: "Поиск",
+                ielts_skills_title: "📊 Навыки IELTS",
+                vocab_main_title: "📚 База слов Cambridge 2000",
+                balance_text: "Ваш баланс:",
+                btn_get_xp: "+ 100 XP получить",
+                vocab_desc: "Выберите уровень. Если блок заблокирован, вы можете разблокировать его за баллы XP.",
+                a2_title: "Начальный набор слов",
+                a2_sub: "10 блоков (по 30 слов каждый)",
+                b1_title: "Слова среднего уровня",
+                b1_sub: "16 блоков (по 30 слов каждый)",
+                b2_title: "Слова выше среднего",
+                b2_sub: "20 блоков (по 30 слов каждый)",
+                c1_title: "Профессиональные слова",
+                c1_sub: "15 блоков (по 30 слов каждый)",
+                c2_title: "Наивысший продвинутый уровень",
+                c2_sub: "5 блоков (по 30 слов каждый)",
+                ai_chat_title: "💬✨ Чат с AI English Coach",
+                ai_chat_desc: "Задайте любой вопрос искусственному интеллекту и общайтесь на английском:",
+                ai_welcome: "Привет! Я твой личный ИИ-тренер по английскому. Какой у тебя вопрос? 🚀",
+                btn_send: "Отправить",
+                btn_back: "← Назад",
+                btn_back_levels: "← К уровням",
+                callcenter_title: "☎️ Колл-центр и Обращения",
+                leader_title: "Главный Руководитель",
+                comments_title: "💬 Комментарии и Обсуждение",
+                btn_comment: "Оставить комментарий",
+                nav_home: "Главная",
+                nav_vocab: "Слова",
+                nav_chat: "AI Чат"
+            },
+            en: {
+                menu_title: "📂 REBEL Menu",
+                lang_label: "🌐 App Language:",
+                menu_battle: "Battle Room (1v1)",
+                menu_leaderboard: "Leaderboard & Legends",
+                menu_callcenter: "Call Center & Support",
+                menu_profile: "Student Profile",
+                hub_title: "REBEL Hub",
+                hub_desc: "A modern AI-powered platform for independent, systematic, and effective English learning.",
+                youtube_title: "🔍 YouTube Search Center",
+                btn_search: "Search",
+                ielts_skills_title: "📊 IELTS Skills",
+                vocab_main_title: "📚 Cambridge 2000 Vocabulary",
+                balance_text: "Your balance:",
+                btn_get_xp: "+ 100 XP get",
+                vocab_desc: "Select a level. If a block is locked, you can unlock it using your XP score.",
+                a2_title: "Elementary vocabulary set",
+                a2_sub: "10 blocks (30 words each)",
+                b1_title: "Intermediate words",
+                b1_sub: "16 blocks (30 words each)",
+                b2_title: "Upper-intermediate words",
+                b2_sub: "20 blocks (30 words each)",
+                c1_title: "Advanced vocabulary",
+                c1_sub: "15 blocks (30 words each)",
+                c2_title: "Proficiency level",
+                c2_sub: "5 blocks (30 words each)",
+                ai_chat_title: "💬✨ AI English Coach Chat",
+                ai_chat_desc: "Ask any question to the AI and practice communicating in English:",
+                ai_welcome: "Hello! I am your personal AI English Coach. What is your question? 🚀",
+                btn_send: "Send",
+                btn_back: "← Back",
+                btn_back_levels: "← Back to levels",
+                callcenter_title: "☎️ Call Center & Support",
+                leader_title: "Head Leader",
+                comments_title: "💬 Comments & Discussion",
+                btn_comment: "Leave a comment",
+                nav_home: "Home",
+                nav_vocab: "Vocab",
+                nav_chat: "AI Chat"
+            }
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('app_lang', lang);
+            applyTranslations();
+        }
+
+        function applyTranslations() {
+            let t = translations[currentLang];
+            if(!t) return;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                let key = el.getAttribute('data-i18n');
+                if(t[key]) {
+                    el.innerText = t[key];
+                }
+            });
+
+            document.getElementById('m-title').innerText = t.menu_title;
+            document.getElementById('m-lang-label').innerText = t.lang_label;
+            document.getElementById('language-select').value = currentLang;
+        }
+
+        updateXPUI();
+        applyTranslations();
+
+        function updateXPUI() {
+            document.getElementById('user-xp-count').innerText = userXP + " XP";
+            let lb = document.getElementById('leaderboard-xp-val');
+            if(lb) lb.innerText = userXP + " XP";
+            localStorage.setItem('user_xp', userXP);
+        }
+
+        function earnXP() {
+            userXP += 100;
+            updateXPUI();
+            alert(currentLang === 'ru' ? "Поздравляем! Добавлено +100 XP." : currentLang === 'en' ? "Congratulations! +100 XP added." : "Tabriklaymiz! +100 XP qo'shildi.");
+        }
+
+        function toggleMenuDrawer() {
+            let drawer = document.getElementById('menu-drawer');
+            let overlay = document.getElementById('menuOverlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function openDrawerTab(tabName) {
+            toggleMenuDrawer();
+            switchTab(tabName, null);
+        }
+
+        function loadCustomDesign() {
+            let accent = localStorage.getItem('custom_accent');
+            let card = localStorage.getItem('custom_card');
+            if(accent) {
+                document.documentElement.style.setProperty('--accent-color', accent);
+                let p = document.getElementById('picker-accent');
+                if(p) p.value = accent;
+            }
+            if(card) {
+                document.documentElement.style.setProperty('--card-bg', card);
+                let c = document.getElementById('picker-card');
+                if(c) c.value = card;
+            }
+        }
+        loadCustomDesign();
+
+        function updateDesignTheme(type, val) {
+            if(type === 'accent') {
+                document.documentElement.style.setProperty('--accent-color', val);
+                localStorage.setItem('custom_accent', val);
+            } else if(type === 'card') {
+                document.documentElement.style.setProperty('--card-bg', val);
+                localStorage.setItem('custom_card', val);
+            }
+        }
+
+        // Darajalar va Unlock funksiyasi
+        function openVocabLevel(levelKey, levelTitle, costXP) {
+            if(!unlockedLevels[levelKey]) {
+                if(userXP >= costXP) {
+                    if(confirm(currentLang === 'ru' ? `Потратить ${costXP} XP чтобы открыть этот уровень?` : currentLang === 'en' ? `Spend ${costXP} XP to unlock this level?` : `Bu darajani ochish uchun ${costXP} XP sarflaysizmi?`)) {
+                        userXP -= costXP;
+                        unlockedLevels[levelKey] = true;
+                        localStorage.setItem('unlocked_levels', JSON.stringify(unlockedLevels));
+                        updateXPUI();
+                        alert(currentLang === 'ru' ? "Успешно открыто! 🎉" : currentLang === 'en' ? "Successfully unlocked! 🎉" : "Muvaffaqiyatli ochildi! 🎉");
+                    } else {
+                        return;
+                    }
+                } else {
+                    alert(currentLang === 'ru' ? `Недостаточно XP! Нужно ${costXP} XP (У вас: ${userXP} XP).` : currentLang === 'en' ? `Not enough XP! Requires ${costXP} XP (You have: ${userXP} XP).` : `Yetarli XP yo'q! Bu darajani ochish uchun ${costXP} XP kerak (Sizda: ${userXP} XP).`);
+                    return;
+                }
+            }
+
+            document.getElementById('tab-vocab').style.display = 'none';
+            document.getElementById('vocab-detail-view').style.display = 'block';
+            document.getElementById('vocab-level-title').innerText = levelTitle;
+
+            let blocksCount = levelKey === 'A2' ? 10 : levelKey === 'B1' ? 16 : levelKey === 'B2' ? 20 : levelKey === 'C1' ? 15 : 5;
+            let list = document.getElementById('vocab-blocks-list');
+            list.innerHTML = '';
+
+            for(let i = 1; i <= blocksCount; i++) {
+                let startWord = ((i - 1) * 30) + 1;
+                let endWord = i * 30;
+                list.innerHTML += `
+                    <div class="card flex justify-between items-center" style="border-color: #6366f1;">
+                        <div>
+                            <span class="text-[11px] bg-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-full font-medium">${levelKey} • Blok ${i} (${startWord}-${endWord} so'z)</span>
+                            <h3 class="text-sm font-bold text-white mt-2">Cambridge Smart Blok ${i}</h3>
+                            <p class="text-[12px] text-slate-400">30 ta saralangan so'zlar</p>
+                        </div>
+                        <button onclick="alert('Blok ${i} so\'zlari ochildi!')" class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 12px;">O'qish 📖</button>
+                    </div>
+                `;
+            }
+        }
+
+        function closeVocabDetail() {
+            document.getElementById('vocab-detail-view').style.display = 'none';
+            document.getElementById('tab-vocab').style.display = 'block';
+        }
+
+        let defaultContent = [
+            { id: 1, category: 'listening', title: 'Listening Masterclass', desc: 'Eng tez va aniq ball olish sirlari.', videoId: 'dQw4w9WgXcQ' }
+        ];
+
+        let appContent = JSON.parse(localStorage.getItem('rebel_content')) || defaultContent;
+        let allComments = JSON.parse(localStorage.getItem('rebel_comments')) || {};
+        let supportMessages = JSON.parse(localStorage.getItem('rebel_support_msgs')) || [];
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            document.getElementById('user-name').innerText = user.first_name || "Rebel O'quvchi";
+            document.getElementById('user-username').innerText = user.username ? "@" + user.username : "ID: " + user.id;
+
+            if (user.id === MY_ADMIN_ID) {
+                isAdmin = true;
+                document.getElementById('nav-admin-btn').style.display = 'flex';
+            }
+        } else {
+            isAdmin = true; 
+            document.getElementById('nav-admin-btn').style.display = 'flex';
+        }
+
+        function sendSupportMessage() {
+            let name = document.getElementById('support-user-name').value.trim();
+            let contact = document.getElementById('support-user-phone').value.trim();
+            let msg = document.getElementById('support-user-msg').value.trim();
+
+            if(!name || !msg) { alert('Ism va murojaat matni kiritilishi shart!'); return; }
+
+            supportMessages.push({ id: Date.now(), name, contact, msg, date: new Date().toLocaleDateString() });
+            localStorage.setItem('rebel_support_msgs', JSON.stringify(supportMessages));
+            alert('Murojaatingiz Asosiy Rahbarga yuborildi!');
+            
+            document.getElementById('support-user-name').value = '';
+            document.getElementById('support-user-phone').value = '';
+            document.getElementById('support-user-msg').value = '';
+            renderAdminSupportList();
+        }
+
+        function renderAdminSupportList() {
+            let list = document.getElementById('admin-support-list');
+            if(!list) return;
+            list.innerHTML = '';
+            if(supportMessages.length === 0) {
+                list.innerHTML = '<p style="color: var(--subtext-color); font-size: 12px;">Hali murojaatlar yo\'q.</p>';
+                return;
+            }
+            supportMessages.forEach((item, idx) => {
+                list.innerHTML += `
+                    <div style="padding: 8px 0; border-bottom: 1px solid var(--border-color); font-size: 12px;">
+                        <div><b>Kimdan:</b> ${item.name} (${item.contact || 'Aloqa yo\'q'})</div>
+                        <div style="margin: 2px 0;"><b>Xabar:</b> ${item.msg}</div>
+                        <button class="btn-danger" style="margin-top:4px;" onclick="deleteSupportMsg(${idx})">O'chirish</button>
+                    </div>
+                `;
+            });
+        }
+        renderAdminSupportList();
+
+        function deleteSupportMsg(idx) {
+            supportMessages.splice(idx, 1);
+            localStorage.setItem('rebel_support_msgs', JSON.stringify(supportMessages));
+            renderAdminSupportList();
+        }
+
+        function sendAIChatMessage() {
+            let inputField = document.getElementById('ai-chat-input');
+            let text = inputField.value.trim();
+            if(!text) return;
+
+            let chatBox = document.getElementById('ai-chat-box');
+            chatBox.innerHTML += `<div class="chat-msg user">${escapeHtml(text)}</div>`;
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let aiReply = getAIResponse(text);
+                chatBox.innerHTML += `<div class="chat-msg ai">${aiReply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        function getAIResponse(query) {
+            return currentLang === 'ru' ? `Отличный вопрос! По поводу "${query}" рекомендую попрактиковаться.` : currentLang === 'en' ? `Great question! Regarding "${query}", I recommend practicing in English.` : `Ajoyib savol! "${query}" bo'yicha ingliz tilida amaliyot qilishni tavsiya etaman.`;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function searchYouTubeLessons() {
+            let query = document.getElementById('search-input').value.trim();
+            let resDiv = document.getElementById('search-results');
+            if(!query) { alert('Mavzu kiriting!'); return; }
+            resDiv.innerHTML = `
+                <div class="card" style="border-color: var(--accent-color);">
+                    <h4 style="margin:0 0 6px 0; color: var(--accent-color); font-size: 13px;">🔎 "${query}" bo'yicha natija:</h4>
+                    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' english ielts')}" target="_blank" class="btn-primary" style="font-size: 12px; padding: 8px;">▶️ YouTube'da ochish</a>
+                </div>
+            `;
+        }
+
+        function openLesson(id) {
+            currentLessonId = id;
+            const item = appContent.find(i => i.id === id);
+            if(!item) return;
+
+            document.getElementById('skill-view').style.display = 'none';
+            document.getElementById('lesson-view').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'none';
+
+            document.getElementById('lesson-title').innerText = item.title;
+            document.getElementById('lesson-desc').innerText = item.desc;
+            document.getElementById('lesson-iframe').src = `https://www.youtube.com/embed/${item.videoId}`;
+
+            renderComments();
+        }
+
+        function addComment() {
+            let text = document.getElementById('user-comment-input').value.trim();
+            if(!text) return;
+            if(!allComments[currentLessonId]) allComments[currentLessonId] = [];
+            
+            allComments[currentLessonId].push({
+                id: Date.now(),
+                user: document.getElementById('user-name').innerText,
+                text,
+                pinned: false
+            });
+            localStorage.setItem('rebel_comments', JSON.stringify(allComments));
+            document.getElementById('user-comment-input').value = '';
+            renderComments();
+        }
+
+        function renderComments() {
+            let list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            let comms = allComments[currentLessonId] || [];
+            if(comms.length === 0) {
+                list.innerHTML = '<p style="color: var(--subtext-color); font-size: 12px;">Hali izohlar yo\'q.</p>';
+                return;
+            }
+            comms.sort((a, b) => b.pinned - a.pinned);
+            comms.forEach((c, idx) => {
+                list.innerHTML += `
+                    <div class="comment-item ${c.pinned ? 'pinned' : ''}">
+                        <div><b>${c.user}:</b> ${c.text}</div>
+                        ${isAdmin ? `<div style="display:flex; gap:4px;"><button style="background:none;border:none;cursor:pointer;" onclick="togglePin(${idx})">📌</button><button style="background:none;border:none;cursor:pointer;" onclick="deleteComment(${idx})">❌</button></div>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function togglePin(idx) {
+            let comms = allComments[currentLessonId];
+            comms[idx].pinned = !comms[idx].pinned;
+            localStorage.setItem('rebel_comments', JSON.stringify(allComments));
+            renderComments();
+        }
+
+        function deleteComment(idx) {
+            let comms = allComments[currentLessonId];
+            comms.splice(idx, 1);
+            localStorage.setItem('rebel_comments', JSON.stringify(allComments));
+            renderComments();
+        }
+
+        function closeLessonView() {
+            document.getElementById('lesson-view').style.display = 'none';
+            document.getElementById('skill-view').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('lesson-iframe').src = '';
+        }
+
+        function openSkill(cat) {
+            const titles = { listening: '🎧 Listening Hub', reading: '📖 Reading Hub', writing: '✍️ Writing Hub', speaking: '🗣️ Speaking Hub' };
+            document.getElementById('skill-view-title').innerText = titles[cat];
+            const list = document.getElementById('skill-lessons-list');
+            list.innerHTML = '';
+            let filtered = appContent.filter(item => item.category === cat);
+            if(filtered.length === 0) {
+                list.innerHTML = '<p style="color: var(--subtext-color); font-size: 12px;">Darslar topilmadi.</p>';
+            }
+            filtered.forEach(item => {
+                list.innerHTML += `
+                    <div class="card" onclick="openLesson(${item.id})" style="cursor:pointer;">
+                        <h3 style="margin:0 0 4px 0; color: var(--accent-color); font-size: 14px;">${item.title}</h3>
+                        <p style="margin:0; font-size: 12px; color: var(--subtext-color);">${item.desc}</p>
+                    </div>
+                `;
+            });
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('skill-view').style.display = 'block';
+        }
+
+        function closeSkillView() {
+            document.getElementById('skill-view').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
+        }
+
+        function addNewContent() {
+            const category = document.getElementById('admin-category').value;
+            const title = document.getElementById('admin-title').value.trim();
+            const desc = document.getElementById('admin-desc').value.trim();
+            const videoId = document.getElementById('admin-youtube').value.trim();
+            if(!title || !videoId) { alert('Maydonlarni to\'ldiring!'); return; }
+            appContent.push({ id: Date.now(), category, title, desc, videoId });
+            localStorage.setItem('rebel_content', JSON.stringify(appContent));
+            alert('Qo\'shildi!');
+            renderAdminList();
+            document.getElementById('admin-title').value = '';
+            document.getElementById('admin-desc').value = '';
+            document.getElementById('admin-youtube').value = '';
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-content-list');
+            if(!list) return;
+            list.innerHTML = '';
+            appContent.forEach((item, index) => {
+                list.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 12px;">
+                        <span><b>[${item.category.toUpperCase()}]</b> ${item.title}</span>
+                        <button class="btn-danger" onclick="deleteContent(${index})">O'chirish</button>
+                    </div>
+                `;
+            });
+        }
+        renderAdminList();
+
+        function deleteContent(index) {
+            appContent.splice(index, 1);
+            localStorage.setItem('rebel_content', JSON.stringify(appContent));
+            renderAdminList();
+        }
+
+        function toggleTheme() { document.body.classList.toggle('light'); }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            
+            let targetTab = document.getElementById('tab-' + tabName);
+            if(targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
