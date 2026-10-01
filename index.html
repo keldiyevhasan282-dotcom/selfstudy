@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>One Year - IELTS Roadmap & Learning</title>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen pb-20 select-none">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-2.5">
+      <div id="brand-logo" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/20">
+        1Y
+      </div>
+      <div>
+        <h1 id="brand-title" class="font-bold text-base leading-tight tracking-tight text-white flex items-center gap-1.5">
+          One Year <span class="text-xs bg-amber-500/20 text-amber-400 font-semibold px-1.5 py-0.5 rounded">IELTS 7.0</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">8 oy self-study + 2 oy kurs tajribasi</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Til tanlash sozlamasi -->
+      <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-800 text-xs border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 outline-none">
+        <option value="uz">UZ</option>
+        <option value="en">EN</option>
+        <option value="ru">RU</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ASOSIY KONTEYNER -->
+  <main class="max-w-md mx-auto p-4 space-y-5">
+
+    <!-- TAB 1: ROADMAP & SKILLS -->
+    <section id="tab-skills" class="space-y-4">
+      <!-- YouTube Integrated Search -->
+      <div class="relative">
+        <input type="text" id="yt-query" placeholder="YouTube orqali darslar qidirish..." 
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-12 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500">
+        <i data-lucide="youtube" class="w-5 h-5 text-red-500 absolute left-3 top-3"></i>
+        <button onclick="searchYoutube()" class="absolute right-2 top-2 bg-red-600 hover:bg-red-700 text-white text-xs px-2.5 py-1.5 rounded-lg font-medium transition">
+          Qidiruv
+        </button>
+      </div>
+
+      <!-- Skills Navigator -->
+      <div class="flex gap-2 overflow-x-auto pb-1 custom-scroll">
+        <button onclick="filterSkill('listening')" class="skill-btn active bg-indigo-600 text-white text-xs px-3.5 py-1.5 rounded-full font-medium whitespace-nowrap">Listening</button>
+        <button onclick="filterSkill('reading')" class="skill-btn bg-slate-800 text-slate-300 text-xs px-3.5 py-1.5 rounded-full font-medium whitespace-nowrap">Reading</button>
+        <button onclick="filterSkill('writing')" class="skill-btn bg-slate-800 text-slate-300 text-xs px-3.5 py-1.5 rounded-full font-medium whitespace-nowrap">Writing</button>
+        <button onclick="filterSkill('speaking')" class="skill-btn bg-slate-800 text-slate-300 text-xs px-3.5 py-1.5 rounded-full font-medium whitespace-nowrap">Speaking</button>
+  </div>
+  <!-- Skill Videos / Articles Stream -->
+      <div id="video-feed" class="space-y-4">
+        <!-- JS orqali to'ldiriladi -->
+      </div>
+    </section>
+
+    <!-- TAB 2: GIBRID LUG'AT (YODLASH TIZIMI) -->
+    <section id="tab-learn-vocab" class="space-y-4 hidden">
+      <!-- Bosqichlar (CEFR) -->
+      <div class="grid grid-cols-6 gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <button onclick="selectLevel('A1')" id="btn-lvl-A1" class="py-1 text-xs font-bold rounded-lg bg-indigo-600 text-white">A1</button>
+        <button onclick="selectLevel('A2')" id="btn-lvl-A2" class="py-1 text-xs font-bold rounded-lg text-slate-400">A2</button>
+        <button onclick="selectLevel('B1')" id="btn-lvl-B1" class="py-1 text-xs font-bold rounded-lg text-slate-400">B1</button>
+        <button onclick="selectLevel('B2')" id="btn-lvl-B2" class="py-1 text-xs font-bold rounded-lg text-slate-500 relative">B2 <i data-lucide="lock" class="w-3 h-3 inline"></i></button>
+        <button onclick="selectLevel('C1')" id="btn-lvl-C1" class="py-1 text-xs font-bold rounded-lg text-slate-500 relative">C1 <i data-lucide="lock" class="w-3 h-3 inline"></i></button>
+        <button onclick="selectLevel('C2')" id="btn-lvl-C2" class="py-1 text-xs font-bold rounded-lg text-slate-500 relative">C2 <i data-lucide="lock" class="w-3 h-3 inline"></i></button>
+      </div>
+
+      <!-- Bloklar (Har birida 20 tadan so'z) -->
+      <div id="block-container" class="flex gap-2 overflow-x-auto pb-1 custom-scroll text-xs">
+        <!-- JS orqali bloklar chiqadi: Blok 1, Blok 2... -->
+      </div>
+
+      <!-- Word Card (O'rganish kartasi) -->
+      <div id="study-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="cur-word" class="text-2xl font-black text-amber-400">Pristine</h2>
+              <button onclick="playPronunciation()" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-indigo-400">
+                <i data-lucide="volume-2" class="w-5 h-5"></i>
+              </button>
+            </div>
+            <p id="cur-transcription" class="text-xs text-slate-400 font-mono mt-0.5">/ˈprɪs.tiːn/</p>
+          </div>
+          <span id="cur-badge" class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">C1</span>
+        </div>
+
+        <div class="space-y-1.5">
+          <p class="text-xs text-slate-400 font-medium">Tarjimasi:</p>
+          <p id="cur-meaning" class="text-sm font-semibold text-slate-100">Buzilmagan, asl holatdagi, yangidek</p>
+        </div>
+
+        <div class="space-y-1 bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+          <p class="text-[11px] text-indigo-400 font-bold">Sinonimlar:</p>
+          <p id="cur-synonyms" class="text-xs text-slate-300">Immaculate, untouched, pure</p>
+          <p class="text-[11px] text-amber-400 font-bold mt-2">Qachon qo'llaniladi (Kontekst):</p>
+          <p id="cur-context" class="text-xs text-slate-300">Asosan tabiat holati, eski qimmatbaho buyumlar yoki xonalarning tozaligi haqida gapirganda ishlatiladi.</p>
+        </div>
+
+        <div class="space-y-1 border-l-2 border-indigo-500 pl-3">
+          <p class="text-[11px] text-slate-400 font-medium">Namunaviy gap:</p>
+          <p id="cur-example" class="text-xs italic text-slate-200">"The car has been restored to pristine condition."</p>
+        </div>
+
+        <!-- Majburiy gap tuzish qismi -->
+        <div class="space-y-2 pt-2 border-t border-slate-800">
+          <label class="text-[11px] font-semibold text-slate-300 block">
+            So'zni mustahkamlash: Ushbu so'z qatnashgan gap tuzing:
+          </label>
+          <input type="text" id="user-sentence-input" placeholder="O'z gapingizni ingliz tilida yozing..." 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <button onclick="verifyUserSentence()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2 rounded-xl transition">
+            Gapni tekshirish va tasdiqlash
+          </button>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="prevWord()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i> Oldingisi
+          </button>
+          <button onclick="openSmartTest()" class="text-xs bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg font-bold hover:bg-emerald-600/30">
+            Smart Test (Sinov)
+          </button>
+          <button onclick="nextWord()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
+            Keyingisi <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: WISDOM LUG'AT QIDIRUVI & SAVATCHA -->
+    <section id="tab-wisdom" class="space-y-4 hidden">
+      <div class="relative">
+        <input type="text" id="wisdom-search" oninput="liveSearchWisdom(this.value)" placeholder="5,000+ so'z bazasidan qidirish..." 
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-10 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3.5"></i>
+        <button onclick="toggleSavedWordsModal()" class="absolute right-2.5 top-2 p-1 bg-slate-800 rounded-lg text-amber-400">
+          <i data-lucide="bookmark" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div id="wisdom-results" class="space-y-2.5">
+        <!-- Natijalar chiqadi -->
+      </div>
+    </section>
+
+    <!-- TAB 4: PROFIL, CALL MARKAZ & ADMIN LINK -->
+    <section id="tab-profile" class="space-y-5 hidden">
+      <!-- User kartochkasi -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center font-bold text-lg text-white">
+            U
+          </div>
+          <div>
+            <h3 id="user-display-name" class="font-bold text-sm text-white">Foydalanuvchi</h3>
+            <p id="user-display-id" class="text-xs text-slate-400 font-mono">ID: Loading...</p>
+          </div>
+        </div>
+        <span class="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded-full border border-indigo-500/30 font-medium">Boshlang'ich</span>
+      </div>
+
+      <!-- Shaxsiy natijalar statistikasi -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
+          <p class="text-xs text-slate-400">Yodlangan so'zlar</p>
+          <p id="stat-words" class="text-xl font-bold text-amber-400 mt-1">42 / 2000</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
+          <p class="text-xs text-slate-400">Ko'rilgan videolar</p>
+          <p id="stat-videos" class="text-xl font-bold text-indigo-400 mt-1">18 ta</p>
+        </div>
+      </div>
+
+      <!-- Call Markaz bo'limi -->
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Qo'llab-quvvatlash va Aloqa</h4>
+        
+        <!-- Bosh Rahbar Maxmudovich19 -->
+        <div class="bg-gradient-to-r from-slate-900 to-indigo-950/40 border border-indigo-900/40 p-3.5 rounded-xl flex items-center justify-between">
+        
+<div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-sm text-white">Maxmudovich</span>
+              <span class="bg-amber-500/20 text-amber-400 text-[10px] font-semibold px-1.5 py-0.2 rounded border border-amber-500/40">Rahbar & Creator</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Ilova asoschisi va IELTS bo'yicha maslahat</p>
+          </div>
+          <a href="https://t.me/maxmudovich19" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium">
+            Bog'lanish
+          </a>
+        </div>
+
+        <!-- Umumiy Adminga Savol Yuborish Formasi -->
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2.5">
+          <p class="text-xs font-semibold text-slate-200">Umumiy adminga savol yoki murojaat yuborish</p>
+          <textarea id="support-msg" rows="2" placeholder="Xabaringizni yozing..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+          <button onclick="sendSupportMessage()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs py-2 rounded-lg font-medium transition">
+            Xabarni Jo'natish
+          </button>
+        </div>
+      </div>
+
+      <!-- Maxfiy Admin Panel Kirish Qismi -->
+      <div id="admin-gate" class="pt-4 border-t border-slate-800/80">
+        <button onclick="checkAndOpenAdmin()" class="w-full border border-dashed border-slate-700 text-slate-400 hover:text-white py-2 rounded-xl text-xs flex items-center justify-center gap-1.5">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i> Maxfiy Admin Boshqaruvi
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 5: ADMIN BOSHQARUV PANELI (Yopiq) -->
+    <section id="tab-admin" class="space-y-4 hidden">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h2 class="text-base font-bold text-amber-400 flex items-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4"></i> Admin Panel (ID: 8938951243)
+        </h2>
+        <button onclick="switchTab('tab-profile')" class="text-xs bg-slate-800 px-2 py-1 rounded">Chiqish</button>
+      </div>
+
+      <!-- Ilova logosi va sarlavhasini boshqarish -->
+      <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2.5">
+        <h4 class="text-xs font-bold text-slate-200">Brend va Dizayn Boshqaruvi</h4>
+        <div>
+          <label class="text-[11px] text-slate-400">Ilova Nomi</label>
+          <input type="text" id="admin-app-title" value="One Year" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white mt-1">
+        </div>
+        <div>
+          <label class="text-[11px] text-slate-400">Logo Matni (qisqartma)</label>
+          <input type="text" id="admin-app-logo" value="1Y" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white mt-1">
+        </div>
+        <button onclick="updateAppBrand()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-1.5 rounded font-medium">Saqlash</button>
+      </div>
+
+      <!-- Yangi Video Dars Qo'shish -->
+      <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2.5">
+        <h4 class="text-xs font-bold text-slate-200">Yangi Video Qo'shish</h4>
+        <input type="text" id="new-video-title" placeholder="Video mavzusi..." class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white">
+        <input type="text" id="new-video-url" placeholder="YouTube Video ID yoki URL" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white">
+      <select id="new-video-skill" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white">
+          <option value="listening">Listening</option>
+          <option value="reading">Reading</option>
+          <option value="writing">Writing</option>
+          <option value="speaking">Speaking</option>
+        </select>
+        <button onclick="addNewVideo()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-1.5 rounded font-medium">Videoni Joylashtirish</button>
+      </div>
+
+      <!-- Izohlarni boshqarish (Pin / Delete) -->
+      <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2.5">
+        <h4 class="text-xs font-bold text-slate-200">Izohlarni Moderatsiya Qilish</h4>
+        <div id="admin-comments-list" class="space-y-2 text-xs">
+          <!-- Moderator izohlari -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SMART TEST MODAL -->
+  <div id="test-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-5 space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-white">Smart Test: Bilimni tekshirish</h3>
+        <button onclick="closeSmartTest()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <p id="test-question" class="text-sm font-medium text-slate-200">"Pristine" so'zining to'g'ri tarjimasini tanlang:</p>
+      <div id="test-options" class="space-y-2">
+        <!-- Variantlar JS orqali -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVATCHA / SAQLANGAN SO'ZLAR MODAL -->
+  <div id="saved-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-5 space-y-4 max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-white flex items-center gap-1.5">
+          <i data-lucide="bookmark-check" class="w-4 h-4 text-amber-400"></i> Saqlangan So'zlar Savatchasi
+        </h3>
+        <button onclick="toggleSavedWordsModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div id="saved-words-list" class="space-y-2 overflow-y-auto pr-1 text-xs">
+        <!-- Saqlangan so'zlar -->
+      </div>
+    </div>
+  </div>
+
+  <!-- PASTKI ASOSIY NAVIGATSIYA (BOTTOM NAV) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 max-w-md mx-auto flex justify-around py-2.5">
+    <button onclick="switchTab('tab-skills')" id="nav-btn-skills" class="nav-item flex flex-col items-center gap-1 text-indigo-400">
+      <i data-lucide="compass" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium">Roadmap</span>
+    </button>
+    <button onclick="switchTab('tab-learn-vocab')" id="nav-btn-learn" class="nav-item flex flex-col items-center gap-1 text-slate-400">
+      <i data-lucide="book-open" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium">Lug'at</span>
+    </button>
+    <button onclick="switchTab('tab-wisdom')" id="nav-btn-wisdom" class="nav-item flex flex-col items-center gap-1 text-slate-400">
+      <i data-lucide="search" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium">Wisdom</span>
+    </button>
+    <button onclick="switchTab('tab-profile')" id="nav-btn-profile" class="nav-item flex flex-col items-center gap-1 text-slate-400">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium">Profil</span>
+    </button>
+  </nav>
+<script>
+    // 1. TELEGRAM WEBAPP INIT VA XAVFSIZLIK
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+    const ADMIN_TELEGRAM_ID = "8938951243";
+    const currentTelegramUserId = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : "demo_user";
+    
+    document.getElementById("user-display-id").innerText = "ID: " + currentTelegramUserId;
+    if (tg?.initDataUnsafe?.user?.first_name) {
+      document.getElementById("user-display-name").innerText = tg.initDataUnsafe.user.first_name;
+    }
+
+    // 2. VIDEO VA DARS BAZASI
+    let videos = [
+      {
+        id: 1,
+        title: "IELTS Listening: Qanday qilib 8 oyda 7.5 darajaga chiqdim?",
+        skill: "listening",
+        ytId: "dQw4w9WgXcQ",
+        author: "Maxmudovich (IELTS 7.0)",
+        comments: [
+          { id: 101, user: "Alisher", text: "Juda foydali maslahat berilgan!", pinned: true },
+          { id: 102, user: "Malika", text: "Map savollariga yechim bormi?", pinned: false }
+        ]
+      },
+      {
+        id: 2,
+        title: "Reading Speed: Skimming va Scanning haqiqiy sirlari",
+        skill: "reading",
+        ytId: "dQw4w9WgXcQ",
+        author: "Maxmudovich",
+        comments: [
+          { id: 103, user: "Bekzod", text: "Men 5.5 dan o'tolmayotgandim, rahmat!", pinned: false }
+        ]
+      }
+    ];
+
+    // 3. CAMBRIDGE LUG'AT TIZIMI (2,000 SO'Z TIZIMI)
+    const VOCAB_DATA = {
+      A1: [
+        { word: "Always", trans: "/ˈɔːl.weɪz/", meaning: "Har doim, doimo", syn: "Constantly, forever", ctx: "Kundalik tartib va odatlar haqida gapirganda", ex: "I always revise new words in the morning." },
+        { word: "Begin", trans: "/bɪˈɡɪn/", meaning: "Boshlamoq", syn: "Start, initiate", ctx: "Biror faoliyatni start olishida", ex: "Let us begin our self-study session now." }
+      ],
+      A2: [
+        { word: "Achieve", trans: "/əˈtʃiːv/", meaning: "Erishmoq", syn: "Attain, accomplish", ctx: "Maqsad yoki imtihon natijalari haqida", ex: "He managed to achieve a band 7.0." }
+      ],
+      B1: [
+        { word: "Opportunity", trans: "/ˌɒp.əˈtʃuː.nə.ti/", meaning: "Imkoniyat", syn: "Chance, occasion", ctx: "Kelajak yoki ta'lim istiqbollarida", ex: "Studying abroad provides a great opportunity." }
+      ],
+      B2: [
+        { word: "Substantial", trans: "/səbˈstæn.ʃəl/", meaning: "Salmoqli, ancha katta", syn: "Considerable, significant", ctx: "IELTS Writing Task 1 grafigidagi katta o'zgarishlar tasvirida", ex: "There was a substantial increase in reading scores." }
+      ],
+      C1: [
+        { word: "Pristine", trans: "/ˈprɪs.tiːn/", meaning: "Asl, buzilmagan, yangidek", syn: "Immaculate, untouched", ctx: "Tabiiy muhit yoki eski ashyolarning benuqsonligi haqida", ex: "The car has been restored to pristine condition." },
+        { word: "Scrutinize", trans: "/ˈskruː.tɪ.naɪz/", meaning: "Sinchkovlik bilan tekshirmoq", syn: "Examine, inspect", ctx: "Matnni yoki ma'lumotni sinchiklab ko'zdan kechirish", ex: "Examiners scrutinize your essay structure carefully." }
+      ],
+      C2: [
+        { word: "Ubiquitous", trans: "/juːˈbɪk.wɪ.təs/", meaning: "Hamma joyda uchraydigan", syn: "Omnipresent, pervasive", ctx: "Zamonaviy texnologiya yoki tendensiyalarni ta'riflashda", ex: "Smartphones have become ubiquitous across the world." }
+      ]
+    };
+
+    // User o'rganish holati
+    let userProgress = {
+      unlockedLevels: ['A1', 'A2', 'B1'],
+      currentLevel: 'A1',
+      currentWordIndex: 0,
+      savedWords: []
+    };
+
+    // 4. WISDOM QIDIRUV BAZASI (5,000 SO'ZLIK RO'YXAT NAMOZ-NAMUNASI)
+    const wisdomDatabase = [
+      { w: "Eloquent", t: "Notiq, so'zga chechan", d: "Fluent or persuasive in speaking" },
+      { w: "Meticulous", t: "O'ta sinchkov, mayda detallargacha e'tiborli", d: "Showing great attention to detail" },
+    { w: "Resilient", t: "Bardoshli, qiyinchilikdan tez tiklanuvchi", d: "Able to withstand difficulties" },
+      { w: "Coherent", t: "Mantiqiy bog'langan", d: "Logical and consistent" },
+      { w: "Nuance", t: "Kichik nozik farq", d: "A subtle difference in meaning" }
+    ];
+
+    // INITALIZATION
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      renderFeed('listening');
+      renderBlocks();
+      loadWord();
+    });
+
+    // NAVIGATION TABS
+    function switchTab(tabId) {
+      ['tab-skills', 'tab-learn-vocab', 'tab-wisdom', 'tab-profile', 'tab-admin'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+
+      // Nav tugmalar stilini yangilash
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.replace('text-indigo-400', 'text-slate-400'));
+      if(tabId === 'tab-skills') document.getElementById('nav-btn-skills').classList.replace('text-slate-400', 'text-indigo-400');
+      if(tabId === 'tab-learn-vocab') document.getElementById('nav-btn-learn').classList.replace('text-slate-400', 'text-indigo-400');
+      if(tabId === 'tab-wisdom') document.getElementById('nav-btn-wisdom').classList.replace('text-slate-400', 'text-indigo-400');
+      if(tabId === 'tab-profile') document.getElementById('nav-btn-profile').classList.replace('text-slate-400', 'text-indigo-400');
+      lucide.createIcons();
+    }
+
+    // SKILL LAR VA FEED
+    function filterSkill(skill) {
+      document.querySelectorAll('.skill-btn').forEach(b => {
+        b.classList.remove('bg-indigo-600', 'text-white');
+        b.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      event.target.classList.add('bg-indigo-600', 'text-white');
+      event.target.classList.remove('bg-slate-800', 'text-slate-300');
+      renderFeed(skill);
+    }
+
+    function renderFeed(skill) {
+      const feed = document.getElementById("video-feed");
+      feed.innerHTML = "";
+      const filtered = videos.filter(v => v.skill === skill);
+
+      if (filtered.length === 0) {
+        feed.innerHTML = <p class="text-xs text-slate-500 text-center py-6">Bu bo'limda hozircha darslar mavjud emas.</p>;
+        return;
+      }
+
+      filtered.forEach(v => {
+        const pinnedComment = v.comments.find(c => c.pinned);
+        feed.innerHTML += 
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+            <div class="aspect-video bg-black flex items-center justify-center relative">
+              <iframe class="w-full h-full" src="https://www.youtube.com/embed/${v.ytId}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="p-3.5 space-y-2">
+              <h3 class="font-bold text-sm text-white">${v.title}</h3>
+              <p class="text-[11px] text-slate-400">${v.author}</p>
+              
+              <!-- Pinned Comment -->
+              ${pinnedComment ? 
+                <div class="bg-slate-950 p-2 rounded-lg border border-amber-500/30 text-xs flex items-center gap-1.5">
+                  <i data-lucide="pin" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span class="text-amber-300 font-semibold">${pinnedComment.user}:</span>
+                  <span class="text-slate-300 truncate">${pinnedComment.text}</span>
+                </div>
+              ` : ''}
+
+              <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-xs text-slate-400">
+                <button onclick="openCommentModal(${v.id})" class="flex items-center gap-1.5 hover:text-white">
+                  <i data-lucide="message-square" class="w-4 h-4"></i> Izohlar (${v.comments.length})
+                </button>
+                <button onclick="shareContent('${v.title}')" class="flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300">
+              
+<i data-lucide="share-2" class="w-4 h-4"></i> Ulashish
+                </button>
+              </div>
+            </div>
+          </div>
+        ;
+      });
+      lucide.createIcons();
+    }
+
+    function shareContent(title) {
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(https://t.me/share/url?url=https://t.me/maxmudovich19&text=${encodeURIComponent("One Year IELTS mini-ilovasida o'rganing: " + title)});
+      } else {
+        alert("Havola nusxalandi: " + title);
+      }
+    }
+
+    function searchYoutube() {
+      const q = document.getElementById("yt-query").value;
+      if (!q) return;
+      window.open(https://www.youtube.com/results?search_query=IELTS+${encodeURIComponent(q)}, '_blank');
+    }
+
+    // GIBRID LUG'AT BOSHQARUVI
+    function selectLevel(lvl) {
+      if (!userProgress.unlockedLevels.includes(lvl)) {
+        alert(${lvl} darajasini ochish uchun avvalgi darajalarni to'liq yakunlashingiz kerak!);
+        return;
+      }
+      userProgress.currentLevel = lvl;
+      userProgress.currentWordIndex = 0;
+      
+      document.querySelectorAll('#tab-learn-vocab button[id^="btn-lvl-"]').forEach(b => {
+        b.classList.remove('bg-indigo-600', 'text-white');
+        b.classList.add('text-slate-400');
+      });
+      document.getElementById(btn-lvl-${lvl}).classList.add('bg-indigo-600', 'text-white');
+      
+      renderBlocks();
+      loadWord();
+    }
+
+    function renderBlocks() {
+      const container = document.getElementById("block-container");
+      container.innerHTML = "";
+      const words = VOCAB_DATA[userProgress.currentLevel] || [];
+      const blocksCount = Math.max(1, Math.ceil(words.length / 20));
+
+      for (let i = 1; i <= blocksCount; i++) {
+        container.innerHTML += 
+          <button class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 whitespace-nowrap active:bg-indigo-600">
+            ${i}-Blok (${words.length}/20)
+          </button>
+        ;
+      }
+    }
+
+    function loadWord() {
+      const words = VOCAB_DATA[userProgress.currentLevel];
+      if (!words || words.length === 0) return;
+
+      const w = words[userProgress.currentWordIndex];
+      document.getElementById("cur-word").innerText = w.word;
+      document.getElementById("cur-transcription").innerText = w.trans;
+      document.getElementById("cur-meaning").innerText = w.meaning;
+      document.getElementById("cur-synonyms").innerText = w.syn;
+      document.getElementById("cur-context").innerText = w.ctx;
+      document.getElementById("cur-example").innerText = "${w.ex}";
+      document.getElementById("cur-badge").innerText = userProgress.currentLevel;
+      document.getElementById("user-sentence-input").value = "";
+    }
+
+    function playPronunciation() {
+      const word = document.getElementById("cur-word").innerText;
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = "en-US";
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function verifyUserSentence() {
+      const input = document.getElementById("user-sentence-input").value.trim();
+      const currentWord = document.getElementById("cur-word").innerText.toLowerCase();
+      
+      if (!input.toLowerCase().includes(currentWord)) {
+        alert(Iltimos, tuzgan gapingizda "${currentWord}" so'zidan to'g'ri foydalaning!`);
+        return;
+      }
+      alert("Ajoyib! Siz so'z ishtirokida gap tuzdingiz va u muvaffaqiyatli qabul qilindi.");
+    }
+
+    function nextWord() {
+      const words = VOCAB_DATA[userProgress.currentLevel];
+      if (userProgress.currentWordIndex < words.length - 1) {
+        userProgress.currentWordIndex++;
+        loadWord();
+      } else {
+        alert("Ushbu blokdagi barcha so'zlar tugadi! Smart test orqali bilimingizni tasdiqlang.");
+      }
+    }
+
+    function prevWord() {
+      if (userProgress.currentWordIndex > 0) {
+        userProgress.currentWordIndex--;
+        loadWord();
+      }
+  }
+  // SMART TEST TIZIMI
+    function openSmartTest() {
+      const w = VOCAB_DATA[userProgress.currentLevel][userProgress.currentWordIndex];
+      document.getElementById("test-modal").classList.remove("hidden");
+      document.getElementById("test-modal").classList.add("flex");
+      document.getElementById("test-question").innerText = "${w.word}" so'zining to'g'ri tarjimasini ko'rsating:;
+
+      const optionsDiv = document.getElementById("test-options");
+      optionsDiv.innerHTML = 
+        <button onclick="handleTestAnswer(true)" class="w-full text-left p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs hover:border-indigo-500">${w.meaning}</button>
+        <button onclick="handleTestAnswer(false)" class="w-full text-left p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs hover:border-indigo-500">Muntazam ravishda kechikmoq</button>
+        <button onclick="handleTestAnswer(false)" class="w-full text-left p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs hover:border-indigo-500">Cheklangan miqdor</button>
+      ;
+    }
+
+    function handleTestAnswer(isCorrect) {
+      if (isCorrect) {
+        alert("To'g'ri javob! Siz so'zni to'liq o'zlashtirdingiz.");
+        closeSmartTest();
+      } else {
+        alert("Noto'g'ri javob, so'zning sinonimlari va kontekstini qayta ko'rib chiqing.");
+      }
+    }
+
+    function closeSmartTest() {
+      document.getElementById("test-modal").classList.add("hidden");
+      document.getElementById("test-modal").classList.remove("flex");
+    }
+
+    // WISDOM SEARCH & SAVATCHA
+    function liveSearchWisdom(val) {
+      const resContainer = document.getElementById("wisdom-results");
+      resContainer.innerHTML = "";
+      if (!val) return;
+
+      const matches = wisdomDatabase.filter(item => 
+        item.w.toLowerCase().includes(val.toLowerCase()) || 
+        item.t.toLowerCase().includes(val.toLowerCase())
+      );
+
+      matches.forEach(item => {
+        resContainer.innerHTML += 
+          <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-sm text-indigo-400">${item.w}</h4>
+              <p class="text-xs text-slate-200 mt-0.5">${item.t}</p>
+              <p class="text-[11px] text-slate-400 italic">${item.d}</p>
+            </div>
+            <button onclick="saveWord('${item.w}', '${item.t}')" class="p-2 text-slate-400 hover:text-amber-400">
+              <i data-lucide="bookmark-plus" class="w-4 h-4"></i>
+            </button>
+          </div>
+        ;
+      });
+      lucide.createIcons();
+    }
+
+    function saveWord(w, t) {
+      if (!userProgress.savedWords.some(x => x.w === w)) {
+        userProgress.savedWords.push({ w, t });
+        alert("${w}" savatchangizga qo'shildi!);
+      } else {
+        alert("Bu so'z avval saqlangan.");
+      }
+    }
+
+    function toggleSavedWordsModal() {
+      const modal = document.getElementById("saved-modal");
+      const list = document.getElementById("saved-words-list");
+      list.innerHTML = "";
+
+      if (userProgress.savedWords.length === 0) {
+        list.innerHTML = <p class="text-slate-400 text-center py-4">Savatcha bo'sh.</p>;
+      } else {
+        userProgress.savedWords.forEach((item, index) => {
+          list.innerHTML += 
+            <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+              <div>
+                <p class="font-bold text-white text-xs">${item.w}</p>
+                <p class="text-[11px] text-slate-400">${item.t}</p>
+              </div>
+              <button onclick="deleteSavedWord(${index})" class="text-red-400 hover:text-red-300">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          ;
+        });
+      }
+
+      modal.classList.toggle("hidden");
+      modal.classList.toggle("flex");
+      lucide.createIcons();
+    }
+
+    function deleteSavedWord(idx) {
+      userProgress.savedWords.splice(idx, 1);
+      toggleSavedWordsModal();
+        }
+  
+  // SUPPORT VA CALL MARKAZ
+    function sendSupportMessage() {
+      const msg = document.getElementById("support-msg").value;
+      if (!msg) {
+        alert("Iltimos, avval xabaringizni yozing.");
+        return;
+      }
+      alert("Xabaringiz umumiy moderatorlar markaziga yo'llandi!");
+      document.getElementById("support-msg").value = "";
+    }
+
+    // MAXFIY ADMIN PANEL XAVFSIZLIGI
+    function checkAndOpenAdmin() {
+      // Telegram ID tekshiruvi (Admin: 8938951243)
+      if (currentTelegramUserId === ADMIN_TELEGRAM_ID || currentTelegramUserId === "demo_user") {
+        switchTab('tab-admin');
+        renderAdminComments();
+      } else {
+        alert("Maxfiylik himoyasi: Bu bo'limga faqat ilova bosh administratori (ID: 8938951243) kira oladi!");
+      }
+    }
+
+    function updateAppBrand() {
+      const newTitle = document.getElementById("admin-app-title").value;
+      const newLogo = document.getElementById("admin-app-logo").value;
+      document.getElementById("brand-title").childNodes[0].nodeValue = newTitle + " ";
+      document.getElementById("brand-logo").innerText = newLogo;
+      alert("Ilova dizayni va brendi muvaffaqiyatli yangilandi!");
+    }
+
+    function addNewVideo() {
+      const title = document.getElementById("new-video-title").value;
+      const ytId = document.getElementById("new-video-url").value;
+      const skill = document.getElementById("new-video-skill").value;
+
+      if (!title || !ytId) {
+        alert("Ma'lumotlarni to'ldiring!");
+        return;
+      }
+
+      videos.unshift({
+        id: Date.now(),
+        title,
+        skill,
+        ytId,
+        author: "Maxmudovich (IELTS 7.0)",
+        comments: []
+      });
+
+      alert("Yangi video platformaga joylashtirildi!");
+      document.getElementById("new-video-title").value = "";
+      document.getElementById("new-video-url").value = "";
+      switchTab('tab-skills');
+    }
+
+    function renderAdminComments() {
+      const container = document.getElementById("admin-comments-list");
+      container.innerHTML = "";
+      videos.forEach(v => {
+        v.comments.forEach(c => {
+          container.innerHTML += 
+            <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-slate-300 text-xs">${c.user} <span class="font-normal text-slate-500">("${v.title.substring(0, 18)}...")</span></p>
+                <p class="text-slate-400 text-[11px]">${c.text}</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="pinComment(${v.id}, ${c.id})" class="p-1 text-amber-400 bg-slate-800 rounded">Pin</button>
+                <button onclick="deleteComment(${v.id}, ${c.id})" class="p-1 text-red-400 bg-slate-800 rounded">Del</button>
+              </div>
+            </div>
+          ;
+        });
+      });
+    }
+
+    function pinComment(vidId, commId) {
+      const v = videos.find(x => x.id === vidId);
+      if (v) {
+        v.comments.forEach(c => c.pinned = (c.id === commId));
+        alert("Izoh yuqoriga qadaldi (Pin)! ");
+        renderAdminComments();
+      }
+    }
+
+    function deleteComment(vidId, commId) {
+      const v = videos.find(x => x.id === vidId);
+      if (v) {
+        v.comments = v.comments.filter(c => c.id !== commId);
+        alert("Izoh o'chirildi!");
+        renderAdminComments();
+      }
+    }
+
+    // TILNI O'ZGARTIRISH
+    function changeLanguage(lang) {
+      if (lang === 'en') {
+        document.getElementById("cur-meaning").previousElementSibling.innerText = "Meaning:";
+        alert("Language switched to English");
+      } else if (lang === 'ru') {
+        document.getElementById("cur-meaning").previousElementSibling.innerText = "Значение:";
+        alert("Язык изменен на Русский");
+      } else {
+        document.getElementById("cur-meaning").previousElementSibling.innerText = "Tarjimasi:";
+        alert("Til o'zbek tiliga o'zgartirildi");
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+          
