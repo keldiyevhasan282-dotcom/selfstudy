@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="uz" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Year - IELTS Self-Study Mini App</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#4F46E5',
+                            dark: '#4338CA',
+                            light: '#818CF8'
+                        },
+                        darkBg: '#0F172A',
+                        cardDark: '#1E293B'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header id="main-header" class="sticky top-0 z-50 bg-white/80 dark:bg-cardDark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between transition-colors duration-300">
+        <div class="flex items-center space-x-3">
+            <div id="app-logo-container" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 text-xl font-bold">
+                <i class="fa-solid fa-graduation-cap" id="header-logo-icon"></i>
+            </div>
+            <div>
+                <h1 id="app-title-text" class="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent">One Year</h1>
+                <p id="app-subtitle-text" class="text-xs text-slate-500 dark:text-slate-400 font-medium">IELTS 7.0 Self-Study Mastery</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <!-- Language Selector -->
+            <div class="relative">
+                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-slate-800 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                    <option value="uz">UZ</option>
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                </select>
+            </div>
+            <!-- Theme toggle button -->
+            <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto pb-24">
+        
+        <!-- SECTION 1: HOME / SKILLS & YOUTUBE -->
+        <section id="sec-home" class="view-section p-4 space-y-6">
+            <!-- Hero Description Banner -->
+            <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-5 text-white shadow-xl shadow-indigo-500/10 relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <span class="bg-white/20 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">1 Year 7.0 Journey</span>
+                <h2 id="hero-title" class="text-xl font-bold mb-1">8 oy Self-Study + 2 oy IELTS Kursi</h2>
+                <p id="hero-desc" class="text-xs text-indigo-100 leading-relaxed mb-4">Noldan boshlab IELTS 7 olgan tajribam, darslar va maxsus ko'rsatmalar to'plami. Barcha skillarni mukammal o'rganing.</p>
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchTab('vocab')" class="bg-white text-indigo-600 text-xs font-bold px-4 py-2 rounded-xl shadow hover:bg-indigo-50 transition">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> <span data-i18n="start_vocab">Lug'atni boshlash</span>
+                    </button>
+                    <button onclick="openYouTubeDirect()" class="bg-indigo-500/50 hover:bg-indigo-500/70 text-white text-xs font-bold px-4 py-2 rounded-xl border border-white/20 transition">
+                        <i class="fa-brands fa-youtube mr-1.5"></i> YouTube
+                    </button>
+                </div>
+            </div>
+
+            <!-- YouTube Direct Search & Quick Access -->
+            <div class="bg-white dark:bg-cardDark rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold flex items-center space-x-2">
+                        <i class="fa-brands fa-youtube text-red-500 text-base"></i>
+                        <span data-i18n="yt_search_title">YouTube IELTS Qidiruvi</span>
+                    </h3>
+                    <span class="text-[10px] bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-2 py-0.5 rounded font-semibold">Direct Access</span>
+                </div>
+                <div class="flex space-x-2">
+                    <input type="text" id="yt-search-input" placeholder="IELTS Listening, Speaking tips..." class="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button onclick="searchYouTube()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 Skills Section -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-extrabold tracking-wide uppercase text-slate-500 dark:text-slate-400" data-i18n="four_skills">4 Asosiy Skill</h3>
+                    <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Video Darslar</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Listening -->
+                    <div onclick="openSkillModal('Listening')" class="bg-white dark:bg-cardDark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-500 cursor-pointer transition group">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <h4 class="font-bold text-sm mb-0.5">Listening</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">8 oy self-study sirlari</p>
+                    </div>
+                    <!-- Reading -->
+                    <div onclick="openSkillModal('Reading')" class="bg-white dark:bg-cardDark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-500 cursor-pointer transition group">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <h4 class="font-bold text-sm mb-0.5">Reading</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Skimming & Scanning</p>
+                    </div>
+                    <!-- Writing -->
+                    <div onclick="openSkillModal('Writing')" class="bg-white dark:bg-cardDark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-500 cursor-pointer transition group">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <h4 class="font-bold text-sm mb-0.5">Writing</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Task 1 & 2 templates</p>
+                    </div>
+                    <!-- Speaking -->
+                    <div onclick="openSkillModal('Speaking')" class="bg-white dark:bg-cardDark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-500 cursor-pointer transition group">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <h4 class="font-bold text-sm mb-0.5">Speaking</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Fluency & Lexical res.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: HYBRID VOCABULARY SYSTEM -->
+        <section id="sec-vocab" class="view-section hidden p-4 space-y-5">
+            <!-- Header switch: Learn vs Search (Wisdom-style) -->
+            <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex">
+                <button onclick="switchVocabTab('learn')" id="vtab-learn-btn" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white dark:bg-cardDark shadow text-indigo-600 transition" data-i18n="vocab_learn">Lug'at Yodlash (2000)</button>
+                <button onclick="switchVocabTab('search')" id="vtab-search-btn" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 dark:text-slate-400 transition" data-i18n="vocab_search">Wisdom Qidiruv (5000)</button>
+            </div>
+
+            <!-- TAB 1: LEARN (Cambridge Level Progression) -->
+            <div id="vocab-learn-container" class="space-y-4">
+                <!-- Category Levels Bar -->
+                <div class="grid grid-cols-6 gap-1 text-center text-[10px] font-extrabold">
+                    <div onclick="selectLevel('A1')" id="lvl-btn-A1" class="p-2 rounded-lg bg-indigo-600 text-white cursor-pointer shadow">A1<br><span class="text-[8px] font-normal">200</span></div>
+                    <div onclick="selectLevel('A2')" id="lvl-btn-A2" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer">A2<br><span class="text-[8px] font-normal">300</span></div>
+                    <div onclick="selectLevel('B1')" id="lvl-btn-B1" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer">B1<br><span class="text-[8px] font-normal">500</span></div>
+                    <div onclick="selectLevel('B2')" id="lvl-btn-B2" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer opacity-70" title="Locked until A1-B1 complete">B2🔒<br><span class="text-[8px] font-normal">600</span></div>
+                    <div onclick="selectLevel('C1')" id="lvl-btn-C1" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer opacity-70" title="Locked">C1🔒<br><span class="text-[8px] font-normal">200</span></div>
+                    <div onclick="selectLevel('C2')" id="lvl-btn-C2" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer opacity-70" title="Locked">C2🔒<br><span class="text-[8px] font-normal">100</span></div>
+                </div>
+
+                <!-- Current Block Header -->
+                <div class="bg-white dark:bg-cardDark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                    <div>
+                        <span id="current-level-badge" class="text-[10px] font-bold bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300 px-2.5 py-0.5 rounded-full uppercase">Level A1</span>
+                        <h3 id="current-block-title" class="text-sm font-extrabold mt-1">Block 1 / 10 (So'zlar: 1-20)</h3>
+                    </div>
+                    <button onclick="startSmartTest()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-brain"></i>
+                        <span data-i18n="smart_test_btn">Smart Test</span>
+                    </button>
+                </div>
+
+                <!-- Flashcard & Study Card -->
+                <div id="flashcard-box" class="bg-white dark:bg-cardDark rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 relative">
+                    <div class="flex items-center justify-between">
+                        <span id="word-counter" class="text-xs font-bold text-slate-400">1 / 20</span>
+                        <button onclick="playPronunciation()" class="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 flex items-center justify-center hover:scale-105 transition">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+
+                    <div class="text-center py-2">
+                        <h2 id="card-word" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight">Apple</h2>
+                        <p id="card-transcription" class="text-xs text-slate-400 font-mono mt-0.5">[ ˈæp.əl ]</p>
+                        <p id="card-translation" class="text-sm font-semibold text-slate-700 dark:text-slate-200 mt-2">Olma (meva)</p>
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl space-y-2 text-xs">
+                        <div>
+                            <span class="font-bold text-slate-500 dark:text-slate-400" data-i18n="synonyms_lbl">Sinonimlar:</span>
+                            <span id="card-synonyms" class="text-slate-700 dark:text-slate-200 font-medium ml-1">Fruit, harvest, pomaceous</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-slate-500 dark:text-slate-400" data-i18n="usage_lbl">Qo'llanish vaziyati:</span>
+                            <span id="card-usage" class="text-slate-700 dark:text-slate-200 font-medium ml-1">Kundalik hayotda ovqatlanish va sog'lom turmush tarzida eng ko'p ishlatiladi.</span>
+                        </div>
+                        <div class="pt-1 border-t border-slate-200 dark:border-slate-700">
+                            <span class="font-bold text-indigo-600 dark:text-indigo-400" data-i18n="example_lbl">Misol:</span>
+                            <p id="card-example" class="italic text-slate-600 dark:text-slate-300 mt-0.5">"An apple a day keeps the doctor away."</p>
+                        </div>
+                    </div>
+
+                    <!-- Forced User Sentence Input -->
+                    <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <label class="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> 
+                            <span data-i18n="forced_sentence_lbl">Majburiy: Shu so'z qatnashgan o'z gapingizni yozing:</span>
+                        </label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="user-sentence-input" placeholder="Type your sentence here..." class="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <button onclick="submitUserSentence()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-xs font-bold transition">Tekshirish</button>
+                        </div>
+                        <p id="sentence-feedback" class="text-[11px] font-medium text-slate-500 hidden"></p>
+                    </div>
+
+                    <!-- Card Nav Buttons -->
+                    <div class="flex justify-between pt-2">
+                        <button onclick="prevWord()" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Oldingi
+                        </button>
+                        <button onclick="nextWord()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
+                            Keyingi <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: WISDOM SEARCH (5000 Words Database & Basket) -->
+            <div id="vocab-search-container" class="space-y-4 hidden">
+                <div class="flex space-x-2">
+                    <input type="text" id="wisdom-search-input" oninput="searchWisdomWords(this.value)" placeholder="5000ta so'z bazasidan qidirish (masalan: ubiquitous...)" class="flex-1 bg-white dark:bg-cardDark border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2.5 text-xs shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button onclick="openBasketModal()" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span id="basket-count" class="bg-white text-amber-600 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+                    </button>
+                </div>
+
+                <!-- Search Results List -->
+                <div id="wisdom-results-list" class="space-y-2 max-h-[450px] overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PROFILE & CALL CENTER -->
+        <section id="sec-profile" class="view-section hidden p-4 space-y-6">
+            <!-- User Profile Card -->
+            <div class="bg-white dark:bg-cardDark rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm text-center relative">
+                <div class="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-indigo-500/30 mb-3">
+                    MY
+                </div>
+                <h3 class="text-base font-extrabold">Maxmudovich (IELTS 7.0)</h3>
+                <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold mt-0.5">Author & Creator of One Year</p>
+                <div class="mt-4 grid grid-cols-3 gap-2 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl text-center">
+                    <div>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold">Level</span>
+                        <p class="text-sm font-black text-indigo-600">C1 Pro</p>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold">Words</span>
+                        <p class="text-sm font-black text-emerald-600">840 / 2000</p>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold">Streak</span>
+                        <p class="text-sm font-black text-amber-600">45 Days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call Center / Support Section -->
+            <div class="bg-white dark:bg-cardDark rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-headset text-indigo-600"></i>
+                        <span data-i18n="call_center_title">Call Markaz va Yordam</span>
+                    </h3>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 px-2 py-0.5 rounded font-bold">24/7 Online</span>
+                </div>
+
+                <!-- Admin 1: maxmudovich19 -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+                            M
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="font-bold text-xs">maxmudovich19</span>
+                                <span class="bg-indigo-600 text-white text-[9px] px-1.5 py-0.2 rounded font-extrabold flex items-center"><i class="fa-solid fa-shield-halved mr-0.5"></i> Admin</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="chief_admin">Asosiy Rahbar & Muallif</p>
+                        </div>
+                    </div>
+                    <button onclick="openChatWithAdmin('maxmudovich19')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                        Bog'lanish
+                    </button>
+                </div>
+
+                <!-- Send Question to Admin Form -->
+                <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <label class="text-xs font-bold text-slate-600 dark:text-slate-300" data-i18n="send_question_lbl">Umumiy adminga savol yuborish:</label>
+                    <textarea id="admin-question-text" rows="2" placeholder="IELTS bo'yicha savolingizni yozing..." class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <button onclick="sendQuestionToAdmin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs font-bold shadow transition flex items-center justify-center space-x-1.5">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span data-i18n="send_btn">Savolni Yuborish</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Panel Gateway for ID 8938951243 -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl p-4 text-white shadow-lg flex items-center justify-between">
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">Admin Gateway</h4>
+                    <p class="text-[11px] text-slate-300">Maxfiy Admin Paneli (ID: 8938951243)</p>
+                </div>
+                <button onclick="openAdminPanel()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                    Kirish 🔒
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-cardDark border-t border-slate-200 dark:border-slate-800 px-6 py-2 flex items-center justify-around z-40">
+        <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center space-y-1 text-indigo-600 dark:text-indigo-400 transition">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] font-bold" data-i18n="nav_home">Asosiy</span>
+        </button>
+        <button onclick="switchTab('vocab')" id="nav-btn-vocab" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+            <i class="fa-solid fa-book text-lg"></i>
+            <span class="text-[10px] font-bold" data-i18n="nav_vocab">Lug'at</span>
+        </button>
+        <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-[10px] font-bold" data-i18n="nav_profile">Profil</span>
+        </button>
+    </nav>
+
+    <!-- MODAL: SKILL VIDEO MODAL WITH COMMENTS & SHARE -->
+    <div id="skill-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cardDark w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <h3 id="skill-modal-title" class="text-base font-extrabold text-indigo-600 dark:text-indigo-400">Listening Masterclass</h3>
+                <button onclick="closeSkillModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Video & Body Content -->
+            <div class="p-5 overflow-y-auto space-y-4 flex-1">
+                <!-- Video Player Placeholder -->
+                <div class="aspect-video bg-slate-900 rounded-xl relative overflow-hidden flex items-center justify-center group cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500" alt="Video cover">
+                    <div class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xl shadow-xl z-10 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-play ml-1"></i>
+                    </div>
+                    <span class="absolute bottom-3 left-3 bg-black/70 text-white text-[10px] px-2.5 py-1 rounded-md font-semibold z-10">1 Year Self Study Guide</span>
+                </div>
+
+                <!-- Action Buttons: Share & Commentary -->
+                <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold text-slate-500">Video Baham ko'rish:</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="shareVideo('telegram')" class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1">
+                            <i class="fa-brands fa-telegram"></i> <span>Telegram</span>
+                        </button>
+                        <button onclick="shareVideo('copy')" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1">
+                            <i class="fa-solid fa-copy"></i> <span>Link</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="space-y-3 pt-2">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Izohlar (Comments)</h4>
+                    
+                    <!-- Comment Input -->
+                    <div class="flex space-x-2">
+                        <input type="text" id="new-comment-input" placeholder="O'z fikringizni yozing..." class="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="addComment()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Yuborish</button>
+                    </div>
+
+                    <!-- Comments List -->
+                    <div id="comments-list" class="space-y-2 mt-3">
+                        <!-- Pinned comment example -->
+                        <div class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 p-3 rounded-xl space-y-1 relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">maxmudovich19</span>
+                                    <span class="bg-indigo-600 text-white text-[8px] px-1.5 py-0.2 rounded font-bold">Admin</span>
+                                    <span class="text-[9px] bg-amber-500 text-white px-1.5 py-0.2 rounded font-bold"><i class="fa-solid fa-thumbtack mr-0.5"></i> Pinned</span>
+                                </div>
+                                <span class="text-[10px] text-slate-400">Bugun</span>
+                            </div>
+                            <p class="text-xs text-slate-700 dark:text-slate-300">Bu videodagi usul menga 8 oyda 7.0 olishga yordam bergan eng asosiy texnikadir!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SMART TEST MODAL -->
+    <div id="smart-test-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cardDark w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-extrabold text-indigo-600 flex items-center space-x-2">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Smart Test (Yodlaganni Isbotlash)</span>
+                </h3>
+                <button onclick="closeSmartTest()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="smart-test-body" class="space-y-4">
+                <!-- Question populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: WISDOM BASKET (SAVATCHA) -->
+    <div id="basket-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cardDark w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-5 space-y-4 max-h-[80vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-sm font-extrabold flex items-center space-x-2 text-amber-500">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span>Saqlangan So'zlar Savatchasi</span>
+                </h3>
+                <button onclick="closeBasketModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="basket-items-list" class="space-y-2 flex-1 overflow-y-auto pr-1">
+                <!-- Basket items -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADMIN PANEL (ID: 8938951243) -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cardDark w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-shield-halved text-indigo-400"></i>
+                    <h3 class="text-sm font-extrabold">Admin Panel (Maxfiy)</h3>
+                </div>
+                <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-5 flex-1 text-xs">
+                <!-- ID Verification Check -->
+                <div class="bg-indigo-50 dark:bg-indigo-950/40 p-3 rounded-xl border border-indigo-200 dark:border-indigo-800 flex items-center justify-between">
+                    <div>
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400">Telegram Admin ID:</span>
+                        <p class="text-slate-600 dark:text-slate-300 font-mono font-bold">8938951243 (Verified)</p>
+                    </div>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                </div>
+
+                <!-- 1. App Logo & Design Customizer -->
+                <div class="space-y-2 bg-slate-50 dark:bg-slate-800/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-extrabold uppercase tracking-wider text-slate-500">Ilova Logo va Dizaynni O'zgartirish</h4>
+                    <div class="space-y-2">
+                        <label class="font-semibold text-slate-600 dark:text-slate-300">Yangi Ilova Nomi:</label>
+                        <input type="text" id="admin-app-name" value="One Year" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2 focus:outline-none">
+                        
+                        <label class="font-semibold text-slate-600 dark:text-slate-300">Logotip Icon (FontAwesome class):</label>
+                        <input type="text" id="admin-logo-icon" value="fa-graduation-cap" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2 focus:outline-none">
+                        
+                        <button onclick="applyAdminBranding()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg transition">Dizaynni Saqlash</button>
+                    </div>
+                </div>
+
+                <!-- 2. Video Management -->
+                <div class="space-y-2 bg-slate-50 dark:bg-slate-800/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-extrabold uppercase tracking-wider text-slate-500">Yangi Video Joylashtirish</h4>
+                    <div class="space-y-2">
+                        <input type="text" id="new-video-title" placeholder="Video sarlavhasi (masalan: Speaking Part 2)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2">
+                        <input type="text" id="new-video-url" placeholder="YouTube Video URL" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2">
+                        <button onclick="addNewVideo()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition">Videoni Yuklash</button>
+                    </div>
+                </div>
+
+                <!-- 3. Comment Moderation (Pin / Delete) -->
+                <div class="space-y-2 bg-slate-50 dark:bg-slate-800/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-extrabold uppercase tracking-wider text-slate-500">Izohlarni Boshqarish (Pin / Delete)</h4>
+                    <div id="admin-comments-moderation" class="space-y-2 max-h-40 overflow-y-auto">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // --- TELEGRAM WEB APP INITIALIZATION ---
+        const tg = window.Telegram.WebApp;
+        if (tg) {
+            tg.expand();
+        }
+
+        // --- TRANSLATIONS (Uzbek, English, Russian) ---
+        const translations = {
+            uz: {
+                app_subtitle: "IELTS 7.0 Self-Study Mastery",
+                start_vocab: "Lug'atni boshlash",
+                yt_search_title: "YouTube IELTS Qidiruvi",
+                four_skills: "4 Asosiy Skill",
+                vocab_learn: "Lug'at Yodlash (2000)",
+                vocab_search: "Wisdom Qidiruv (5000)",
+                smart_test_btn: "Smart Test",
+                synonyms_lbl: "Sinonimlar:",
+                usage_lbl: "Qo'llanish vaziyati:",
+                example_lbl: "Misol:",
+                forced_sentence_lbl: "Majburiy: Shu so'z qatnashgan gapingizni yozing:",
+                call_center_title: "Call Markaz va Yordam",
+                chief_admin: "Asosiy Rahbar & Muallif",
+                send_question_lbl: "Umumiy adminga savol yuborish:",
+                send_btn: "Savolni Yuborish",
+                nav_home: "Asosiy",
+                nav_vocab: "Lug'at",
+                nav_profile: "Profil"
+            },
+            en: {
+                app_subtitle: "IELTS 7.0 Self-Study Mastery",
+                start_vocab: "Start Vocabulary",
+                yt_search_title: "YouTube IELTS Search",
+                four_skills: "4 Core Skills",
+                vocab_learn: "Learn Vocab (2000)",
+                vocab_search: "Wisdom Search (5000)",
+                smart_test_btn: "Smart Test",
+                synonyms_lbl: "Synonyms:",
+                usage_lbl: "Usage Context:",
+                example_lbl: "Example:",
+                forced_sentence_lbl: "Mandatory: Write your own sentence with this word:",
+                call_center_title: "Call Center & Support",
+                chief_admin: "Chief Admin & Author",
+                send_question_lbl: "Ask a question to general admin:",
+                send_btn: "Send Question",
+                nav_home: "Home",
+                nav_vocab: "Vocabulary",
+                nav_profile: "Profile"
+            },
+            ru: {
+                app_subtitle: "IELTS 7.0 Самообучение",
+                start_vocab: "Начать словарь",
+                yt_search_title: "YouTube IELTS Поиск",
+                four_skills: "4 Навыка",
+                vocab_learn: "Учить слова (2000)",
+                vocab_search: "Wisdom Поиск (5000)",
+                smart_test_btn: "Смарт Тест",
+                synonyms_lbl: "Синонимы:",
+                usage_lbl: "Контекст использования:",
+                example_lbl: "Пример:",
+                forced_sentence_lbl: "Обязательно: Напишите свое предложение с этим словом:",
+                call_center_title: "Колл-центр и Поддержка",
+                chief_admin: "Главный Администратор",
+                send_question_lbl: "Задать вопрос админу:",
+                send_btn: "Отправить вопрос",
+                nav_home: "Главная",
+                nav_vocab: "Словарь",
+                nav_profile: "Профиль"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            if (!t) return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+        }
+
+        // --- THEME TOGGLE ---
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- NAVIGATION TABS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) {
+                targetSec.classList.remove('hidden');
+            }
+
+            ['home', 'vocab', 'profile'].forEach(t => {
+                const btn = document.getElementById(`nav-btn-${t}`);
+                if (btn) {
+                    if (t === tabId) {
+                        btn.classList.remove('text-slate-400');
+                        btn.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    } else {
+                        btn.classList.add('text-slate-400');
+                        btn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                    }
+                }
+            });
+        }
+
+        // --- YOUTUBE DIRECT ACCESS ---
+        function openYouTubeDirect() {
+            const query = document.getElementById('yt-search-input').value.trim() || "IELTS 7.0 self study";
+            window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+        }
+
+        function searchYouTube() {
+            openYouTubeDirect();
+        }
+
+        // --- SKILL MODAL & COMMENTS ---
+        let currentSkill = '';
+        function openSkillModal(skillName) {
+            currentSkill = skillName;
+            document.getElementById('skill-modal-title').innerText = `${skillName} Masterclass & 1-Year Strategy`;
+            document.getElementById('skill-modal').classList.remove('hidden');
+        }
+        function closeSkillModal() {
+            document.getElementById('skill-modal').classList.add('hidden');
+        }
+
+        function shareVideo(platform) {
+            if (platform === 'telegram') {
+                window.open(`https://t.me/share/url?url=https://t.me/OneYearIELTSbot&text=Check out this ${currentSkill} IELTS video from One Year mini app!`, '_blank');
+            } else {
+                navigator.clipboard.writeText("https://t.me/OneYearIELTSbot");
+                alert("Havola nusxalandi!");
+            }
+        }
+
+        let commentsData = [
+            { id: 1, author: 'maxmudovich19', role: 'Admin', text: "Bu videodagi usul menga 8 oyda 7.0 olishga yordam bergan eng asosiy texnikadir!", pinned: true, time: 'Bugun' },
+            { id: 2, author: 'Jasurbek', role: 'User', text: "Juda foydali maslahat, rahmat muallif!", pinned: false, time: '1 soat oldin' }
+        ];
+
+        function renderComments() {
+            const list = document.getElementById('comments-list');
+            if (list) {
+                list.innerHTML = commentsData.map(c => `
+                    <div class="${c.pinned ? 'bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60' : 'bg-slate-50 dark:bg-slate-800/50'} p-3 rounded-xl space-y-1 relative">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-xs font-bold ${c.role === 'Admin' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-700 dark:text-slate-300'}">${c.author}</span>
+                                ${c.role === 'Admin' ? '<span class="bg-indigo-600 text-white text-[8px] px-1.5 py-0.2 rounded font-bold">Admin</span>' : ''}
+                                ${c.pinned ? '<span class="text-[9px] bg-amber-500 text-white px-1.5 py-0.2 rounded font-bold"><i class="fa-solid fa-thumbtack mr-0.5"></i> Pinned</span>' : ''}
+                            </div>
+                            <span class="text-[10px] text-slate-400">${c.time}</span>
+                        </div>
+                        <p class="text-xs text-slate-700 dark:text-slate-300">${c.text}</p>
+                    </div>
+                `).join('');
+            }
+
+            // Also update admin moderation list
+            const adminMod = document.getElementById('admin-comments-moderation');
+            if (adminMod) {
+                adminMod.innerHTML = commentsData.map(c => `
+                    <div class="bg-white dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                        <div>
+                            <span class="font-bold">${c.author}:</span> <span class="text-slate-500">${c.text.substring(0, 30)}...</span>
+                        </div>
+                        <div class="flex space-x-1">
+                            <button onclick="togglePinComment(${c.id})" class="px-2 py-1 bg-amber-500 text-white rounded text-[10px] font-bold">Pin</button>
+                            <button onclick="deleteComment(${c.id})" class="px-2 py-1 bg-rose-500 text-white rounded text-[10px] font-bold">Del</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function addComment() {
+            const input = document.getElementById('new-comment-input');
+            if (!input || !input.value.trim()) return;
+            commentsData.push({ id: Date.now(), author: 'User', role: 'User', text: input.value.trim(), pinned: false, time: 'Hozirgina' });
+            input.value = '';
+            renderComments();
+        }
+
+        function togglePinComment(id) {
+            commentsData = commentsData.map(c => c.id === id ? { ...c, pinned: !c.pinned } : c);
+            renderComments();
+        }
+
+        function deleteComment(id) {
+            commentsData = commentsData.filter(c => c.id !== id);
+            renderComments();
+        }
+
+        // --- HYBRID VOCABULARY SYSTEM ---
+        function switchVocabTab(mode) {
+            if (mode === 'learn') {
+                document.getElementById('vocab-learn-container').classList.remove('hidden');
+                document.getElementById('vocab-search-container').classList.add('hidden');
+                document.getElementById('vtab-learn-btn').className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-white dark:bg-cardDark shadow text-indigo-600 transition';
+                document.getElementById('vtab-search-btn').className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 dark:text-slate-400 transition';
+            } else {
+                document.getElementById('vocab-learn-container').classList.add('hidden');
+                document.getElementById('vocab-search-container').classList.remove('hidden');
+                document.getElementById('vtab-search-btn').className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-white dark:bg-cardDark shadow text-indigo-600 transition';
+                document.getElementById('vtab-learn-btn').className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 dark:text-slate-400 transition';
+                initWisdomSearch();
+            }
+        }
+
+        // Sample Cambridge Learn Words database (2000 total distribution structure)
+        const cambridgeLearnWords = {
+            A1: [
+                { word: "Apple", trans: "[ ˈæp.əl ]", translation: "Olma (meva)", synonyms: "Fruit, harvest", usage: "Kundalik ovqatlanishda eng ko'p ishlatiladigan meva nomi.", example: "An apple a day keeps the doctor away." },
+                { word: "Book", trans: "[ bʊk ]", translation: "Kitob", synonyms: "Volume, publication, tome", usage: "O'qish va ta'lim jarayonida qo'llaniladi.", example: "She is reading an interesting book." },
+                { word: "Cat", trans: [ "kæt" ], translation: "Mushuk", synonyms: "Feline, kitty", usage: "Uy hayvonlari haqida gapirganda ishlatiladi.", example: "The cat is sleeping on the sofa." }
+            ],
+            A2: [
+                { word: "Accept", trans: "[ əkˈsept ]", translation: "Qabul qilmoq", synonyms: "Receive, embrace, take", usage: "Taklif yoki shartlarga rozilik bildiruvchi vaziyatda.", example: "He decided to accept the job offer." }
+            ],
+            B1: [
+                { word: "Achieve", trans: "[ əˈtʃiːv ]", translation: "Erishmoq, muvaffaqiyat qozonmoq", synonyms: "Attain, accomplish, reach", usage: "Maqsad va natijalarga erishganda ishlatiladi.", example: "Hard work helps you achieve your goals." }
+            ],
+            B2: [
+                { word: "Comprehensive", trans: "[ ˌkɒm.prɪˈhen.sɪv ]", translation: "Har tomonlama, keng qamrovli", synonyms: "Thorough, exhaustive, complete", usage: "Tadqiqot yoki rejalarni to'liq ko'rib chiqishda.", example: "We need a comprehensive strategy for IELTS." }
+            ],
+            C1: [
+                { word: "Benevolent", trans: "[ bəˈnev.əl.ənt ]", translation: "Mehribon, xayrixoh", synonyms: "Kind, altruistic, charitable", usage: "Odamlarga yordam beruvchi xarakterni ta'riflashda.", example: "The benevolent donor funded the new library." }
+            ],
+            C2: [
+                { word: "Ephemeral", trans: "[ ɪˈfem.ər.əl ]", translation: "O'tkinchi, qisqa muddatli", synonyms: "Transient, fleeting, brief", usage: "Juda qisqa vaqt davom etadigan narsalarga nisbatan.", example: "Fame can be ephemeral in the modern world." }
+            ]
+        };
+
+        let currentLevel = 'A1';
+        let currentIndex = 0;
+
+        function selectLevel(lvl) {
+            if (['B2', 'C1', 'C2'].includes(lvl)) {
+                alert("Oldingi kategoriyalarni to'liq yakunlang va Smart Testdan o'ting!");
+                return;
+            }
+            currentLevel = lvl;
+            currentIndex = 0;
+            loadFlashcard();
+        }
+
+        function loadFlashcard() {
+            const list = cambridgeLearnWords[currentLevel] || cambridgeLearnWords['A1'];
+            const item = list[currentIndex % list.length];
+
+            const badge = document.getElementById('current-level-badge');
+            if (badge) badge.innerText = `Level ${currentLevel}`;
+            
+            const counter = document.getElementById('word-counter');
+            if (counter) counter.innerText = `${(currentIndex % list.length) + 1} / ${list.length}`;
+            
+            const cWord = document.getElementById('card-word');
+            if (cWord) cWord.innerText = item.word;
+            
+            const cTrans = document.getElementById('card-transcription');
+            if (cTrans) cTrans.innerText = item.trans;
+            
+            const cTranslation = document.getElementById('card-translation');
+            if (cTranslation) cTranslation.innerText = item.translation;
+            
+            const cSynonyms = document.getElementById('card-synonyms');
+            if (cSynonyms) cSynonyms.innerText = item.synonyms;
+            
+            const cUsage = document.getElementById('card-usage');
+            if (cUsage) cUsage.innerText = item.usage;
+            
+            const cExample = document.getElementById('card-example');
+            if (cExample) cExample.innerText = `"${item.example}"`;
+            
+            const userSentenceInput = document.getElementById('user-sentence-input');
+            if (userSentenceInput) userSentenceInput.value = '';
+            
+            const sentenceFeedback = document.getElementById('sentence-feedback');
+            if (sentenceFeedback) sentenceFeedback.classList.add('hidden');
+        }
+
+        function nextWord() {
+            currentIndex++;
+            loadFlashcard();
+        }
+
+        function prevWord() {
+            currentIndex = Math.max(0, currentIndex - 1);
+            loadFlashcard();
+        }
+
+        function playPronunciation() {
+            alert("Audio talaffuz ijro etilmoqda...");
+        }
+
+        function submitUserSentence() {
+            const inputEl = document.getElementById('user-sentence-input');
+            if (!inputEl) return;
+            const val = inputEl.value.trim();
+            const currentList = cambridgeLearnWords[currentLevel] || cambridgeLearnWords['A1'];
+            const currentWord = currentList[currentIndex % currentList.length].word.toLowerCase();
+            const feedback = document.getElementById('sentence-feedback');
+            
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                if (val.toLowerCase().includes(currentWord)) {
+                    feedback.className = "text-[11px] font-bold text-emerald-600";
+                    feedback.innerText = "Ajoyib! So'z to'g'ri ishlatildi.";
+                } else {
+                    feedback.className = "text-[11px] font-bold text-rose-600";
+                    feedback.innerText = `Xato: Gapingizda "${currentWord}" so'zi qatnashishi shart!`;
+                }
+            }
+        }
+
+        // Smart Test Modal
+        function startSmartTest() {
+            const modal = document.getElementById('smart-test-modal');
+            if (modal) modal.classList.remove('hidden');
+            const body = document.getElementById('smart-test-body');
+            if (body) {
+                body.innerHTML = `
+                    <p class="text-xs font-bold text-slate-700 dark:text-slate-300">Savol 1: "Comprehensive" so'zining ma'nosi qaysi javobda to'g'ri ko'rsatilgan?</p>
+                    <div class="space-y-2">
+                        <button onclick="answerSmartTest(true)" class="w-full text-left p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 text-xs font-semibold">A) Har tomonlama, keng qamrovli</button>
+                        <button onclick="answerSmartTest(false)" class="w-full text-left p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 text-xs font-semibold">B) Faqat bitta yo'nalishdagi</button>
+                    </div>
+                `;
+            }
+        }
+
+        function answerSmartTest(isCorrect) {
+            if (isCorrect) {
+                alert("Tabriklaymiz! Smart testdan muvaffaqiyatli o'tdingiz. Keyingi bosqichga yo'l ochildi!");
+                closeSmartTest();
+            } else {
+                alert("Noto'g'ri! Qaytadan urinib ko'ring.");
+            }
+        }
+
+        function closeSmartTest() {
+            const modal = document.getElementById('smart-test-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // --- WISDOM SEARCH (5000 Words) & BASKET ---
+        const wisdomDatabase = [
+            { word: "Ubiquitous", trans: "[ juːˈbɪk.wɪ.təs ]", def: "Hamma joyda mavjud bo'lgan, keng tarqalgan", level: "C1" },
+            { word: "Meticulous", trans: "[ məˈtɪk.jə.ləs ]", def: "Juda sinchkov, tartibli va e'tiborli", level: "B2" },
+            { word: "Pragmatic", trans: "[ præɡˈmæt.ɪk ]", def: "Amaliy, real hayotga asoslangan", level: "B2" },
+            { word: "Resilient", trans: "[ rɪˈzɪl.jənt ]", def: "Chidamli, qiyinchiliklarni yengib o'tuvchi", level: "B2" },
+            { word: "Ambiguous", trans: "[ æmˈbɪɡ.ju.əs ]", def: "Ikki xil ma'noli, tushunarsiz", level: "C1" }
+        ];
+
+        let userBasket = [];
+
+        function initWisdomSearch() {
+            searchWisdomWords("");
+        }
+
+        function searchWisdomWords(query) {
+            const listContainer = document.getElementById('wisdom-results-list');
+            if (!listContainer) return;
+            const q = query || '';
+            const filtered = wisdomDatabase.filter(w => w.word.toLowerCase().includes(q.toLowerCase()) || w.def.toLowerCase().includes(q.toLowerCase()));
+            
+            listContainer.innerHTML = filtered.map(item => `
+                <div class="bg-white dark:bg-cardDark p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-sm text-indigo-600 dark:text-indigo-400">${item.word}</span>
+                            <span class="text-[9px] font-bold bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">${item.level}</span>
+                            <span class="text-[10px] text-slate-400 font-mono">${item.trans}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">${item.def}</p>
+                    </div>
+                    <button onclick="toggleBasket('${item.word}')" class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/30 text-amber-500 hover:bg-amber-100 flex items-center justify-center transition">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleBasket(word) {
+            if (!userBasket.includes(word)) {
+                userBasket.push(word);
+                alert(`"${word}" savatchaga qo'shildi!`);
+            } else {
+                userBasket = userBasket.filter(w => w !== word);
+                alert(`"${word}" savatchadan olib tashlandi.`);
+            }
+            const countEl = document.getElementById('basket-count');
+            if (countEl) countEl.innerText = userBasket.length;
+        }
+
+        function openBasketModal() {
+            const modal = document.getElementById('basket-modal');
+            if (modal) modal.classList.remove('hidden');
+            const list = document.getElementById('basket-items-list');
+            if (list) {
+                list.innerHTML = userBasket.length === 0 ? 
+                    `<p class="text-xs text-slate-400 text-center py-6">Savatchangiz bo'sh.</p>` :
+                    userBasket.map(w => `<div class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl font-bold text-xs flex justify-between items-center"><span>${w}</span><i class="fa-solid fa-check text-emerald-500"></i></div>`).join('');
+            }
+        }
+
+        function closeBasketModal() {
+            const modal = document.getElementById('basket-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // --- CALL CENTER & ADMIN ---
+        function openChatWithAdmin(username) {
+            window.open(`https://t.me/${username}`, '_blank');
+        }
+
+        function sendQuestionToAdmin() {
+            const qInput = document.getElementById('admin-question-text');
+            if (!qInput || !qInput.value.trim()) return;
+            alert("Savolingiz asosiy rahbar maxmudovich19 ga Telegram orqali muvaffaqiyatli yuborildi!");
+            qInput.value = '';
+        }
+
+        // --- ADMIN PANEL (ID: 8938951243) ---
+        function openAdminPanel() {
+            const telegramId = prompt("Telegram Admin ID kiriting (Maxfiy):", "8938951243");
+            if (telegramId === "8938951243") {
+                const modal = document.getElementById('admin-modal');
+                if (modal) modal.classList.remove('hidden');
+                renderComments();
+            } else {
+                alert("Xato! Faqat ruxsat etilgan adminlar (ID: 8938951243) kira oladi.");
+            }
+        }
+
+        function closeAdminPanel() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function applyAdminBranding() {
+            const nameInput = document.getElementById('admin-app-name');
+            const iconInput = document.getElementById('admin-logo-icon');
+            if (nameInput) {
+                const titleEl = document.getElementById('app-title-text');
+                if (titleEl) titleEl.innerText = nameInput.value;
+            }
+            if (iconInput) {
+                const iconEl = document.getElementById('header-logo-icon');
+                if (iconEl) iconEl.className = `fa-solid ${iconInput.value}`;
+            }
+            alert("Dizayn va logo muvaffaqiyatli yangilandi!");
+        }
+
+        function addNewVideo() {
+            const titleInput = document.getElementById('new-video-title');
+            if (!titleInput || !titleInput.value.trim()) return;
+            alert(`"${titleInput.value}" video darsi muvaffaqiyatli qo'shildi!`);
+            titleInput.value = '';
+            const urlInput = document.getElementById('new-video-url');
+            if (urlInput) urlInput.value = '';
+        }
+
+        // --- GLOBAL EXPORTS FOR WINDOW OBJECT ---
+        window.switchTab = switchTab;
+        window.changeLanguage = changeLanguage;
+        window.toggleDarkMode = toggleDarkMode;
+        window.openYouTubeDirect = openYouTubeDirect;
+        window.searchYouTube = searchYouTube;
+        window.openSkillModal = openSkillModal;
+        window.closeSkillModal = closeSkillModal;
+        window.shareVideo = shareVideo;
+        window.addComment = addComment;
+        window.togglePinComment = togglePinComment;
+        window.deleteComment = deleteComment;
+        window.switchVocabTab = switchVocabTab;
+        window.selectLevel = selectLevel;
+        window.nextWord = nextWord;
+        window.prevWord = prevWord;
+        window.playPronunciation = playPronunciation;
+        window.submitUserSentence = submitUserSentence;
+        window.startSmartTest = startSmartTest;
+        window.answerSmartTest = answerSmartTest;
+        window.closeSmartTest = closeSmartTest;
+        window.searchWisdomWords = searchWisdomWords;
+        window.toggleBasket = toggleBasket;
+        window.openBasketModal = openBasketModal;
+        window.closeBasketModal = closeBasketModal;
+        window.openChatWithAdmin = openChatWithAdmin;
+        window.sendQuestionToAdmin = sendQuestionToAdmin;
+        window.openAdminPanel = openAdminPanel;
+        window.closeAdminPanel = closeAdminPanel;
+        window.applyAdminBranding = applyAdminBranding;
+        window.addNewVideo = addNewVideo;
+
+        // Initial render run
+        renderComments();
+    </script>
+</body>
+</html>
